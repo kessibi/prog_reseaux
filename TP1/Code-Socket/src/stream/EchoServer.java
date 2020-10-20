@@ -23,6 +23,7 @@ public class EchoServer {
       while (true) {
         String line = socIn.readLine();
         socOut.println(line);
+        System.out.println("SERVER: " + line);
       }
     } catch (Exception e) {
       System.err.println("Error in EchoServer:" + e);
