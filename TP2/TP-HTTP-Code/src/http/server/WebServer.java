@@ -57,9 +57,9 @@ public class WebServer {
           str = in.readLine();
           headString += str + "\n";
         }
-
+        
         Header h = HeaderParser.parseHeader(headString);
-
+        
         // Send the response
         // Send the headers
         out.println(h.getHeaders());
