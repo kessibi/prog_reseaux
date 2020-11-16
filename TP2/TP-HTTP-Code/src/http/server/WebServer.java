@@ -58,18 +58,23 @@ public class WebServer {
           headString += str + "\n";
         }
         
+        // parse and build the header
         Header h = HeaderParser.parseHeader(headString);
+
+        
+        // get the response
+        Response res = new Response(h);
+        res.findFile();
+
         
         // Send the response
         // Send the headers
-        out.println(h.getHeaders());
-
-        // this blank line signals the end of the headers
-        out.println("");
+        out.println(res.getResponseHeaders());
 
         // Send the HTML page
-        out.println("<H1>Welcome to the Ultra Mini-WebServer</H2>");
+        out.println(res.getPayload());
         out.flush();
+        
         remote.close();
       } catch (Exception e) {
         System.out.println("Error: " + e);

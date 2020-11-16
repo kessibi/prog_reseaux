@@ -5,8 +5,8 @@ package http.server.header;
  *
  */
 public class GET extends Header {
-  public GET() {
-    super();
+  public GET(String fn) {
+    super(fn);
     System.out.println("GET header");
   }
 }
