@@ -51,10 +51,6 @@ public class WebServer {
         BufferedReader in = new BufferedReader(new InputStreamReader(is));
         PrintWriter out = new PrintWriter(os);
 
-        // read the data sent. We basically ignore it,
-        // stop reading once a blank line is hit. This
-        // blank line signals the end of the client HTTP
-        // headers.
         String str = ".";
         String headString = "";
 

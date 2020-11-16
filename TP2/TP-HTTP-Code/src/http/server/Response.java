@@ -12,6 +12,7 @@ import java.nio.file.Path;
  *
  */
 public class Response {
+  private static final String rootDir = "../www";
   private Header resHeader;
   private String resPayload;
 
@@ -25,7 +26,7 @@ public class Response {
 
     try {
       // TODO ../www is not the cleanest way to do this
-      filePath = Path.of("../www" + fileName);
+      filePath = Path.of(rootDir + fileName);
       this.resPayload = Files.readString(filePath, StandardCharsets.UTF_8);
 
       this.resHeader.setMime(Files.probeContentType(filePath));
@@ -34,7 +35,7 @@ public class Response {
 
     } catch (MalformedInputException mie) {
       // in case a file is not UTF-8 encoded (eg: favicon.ico)
-      filePath = Path.of("../www" + fileName);
+      filePath = Path.of(rootDir + fileName);
       this.resPayload = Files.readString(filePath, StandardCharsets.ISO_8859_1);
 
       this.resHeader.setMime(Files.probeContentType(filePath));
