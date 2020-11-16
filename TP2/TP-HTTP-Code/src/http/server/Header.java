@@ -6,6 +6,7 @@ package http.server.header;
  */
 public class Header {
   private final String protocol = "HTTP/1.0";
+  private final String server = "Server: Skitzbot/0.1";
   private String content = "Content-Type: text/html";
 
   private int code = 200;
@@ -22,6 +23,7 @@ public class Header {
   }
   public String getHeaders() {
     String res = protocol + " " + codeToStatus() + "\n";
+    res += server + "\n";
     res += content + "\n";
     return res;
   }

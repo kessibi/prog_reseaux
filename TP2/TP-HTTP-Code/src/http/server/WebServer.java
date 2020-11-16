@@ -57,16 +57,14 @@ public class WebServer {
           str = in.readLine();
           headString += str + "\n";
         }
-        
+
         // parse and build the header
         Header h = HeaderParser.parseHeader(headString);
 
-        
         // get the response
         Response res = new Response(h);
         res.findFile();
 
-        
         // Send the response
         // Send the headers
         out.println(res.getResponseHeaders());
@@ -74,7 +72,7 @@ public class WebServer {
         // Send the HTML page
         out.println(res.getPayload());
         out.flush();
-        
+
         remote.close();
       } catch (Exception e) {
         System.out.println("Error: " + e);

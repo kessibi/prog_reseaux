@@ -7,6 +7,8 @@ import java.util.regex.Pattern;
  * HTTP header parser
  */
 public class HeaderParser {
+  private static final String[] supportedMethods = {"GET"};
+
   public static Header parseHeader(String header) {
     Pattern getType = Pattern.compile("^([A-Z]*)(?s)(.*)");
     Matcher typeMatch = getType.matcher(header);
@@ -24,14 +26,14 @@ public class HeaderParser {
     if (fileName.equals("/")) {
       fileName += "index.html";
     }
-  
-    switch (typeMatch.group(1)) {
-      case "GET":
-        return new Header("GET", fileName);
-      default:
-        // TODO throw exception
-        break;
+
+    String meth = typeMatch.group(1);
+    for (String method : supportedMethods) {
+      if (meth.equals(method)) {
+        return new Header(meth, fileName);
+      }
     }
+
     return null;
   }
 }
