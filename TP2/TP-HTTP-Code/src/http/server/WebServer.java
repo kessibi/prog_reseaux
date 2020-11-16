@@ -2,6 +2,7 @@
 
 package http.server;
 
+import http.server.header.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -25,7 +26,7 @@ public class WebServer {
   protected void start() {
     ServerSocket s;
 
-    System.out.println("Webserver starting up on port 80");
+    System.out.println("Webserver starting up on port 3000");
     System.out.println("(press ctrl-c to exit)");
     try {
       // create the main server socket
@@ -38,33 +39,40 @@ public class WebServer {
     System.out.println("Waiting for connection");
     for (;;) {
       try {
-	// wait for a connection
-	Socket remote = s.accept();
-	// remote is now the connected socket
-	System.out.println("Connection, sending data.");
-	BufferedReader in = new BufferedReader(new InputStreamReader(remote.getInputStream()));
-	PrintWriter out = new PrintWriter(remote.getOutputStream());
+        // wait for a connection
+        Socket remote = s.accept();
+        // remote is now the connected socket
+        System.out.println("Connection, sending data.");
+        BufferedReader in = new BufferedReader(new InputStreamReader(remote.getInputStream()));
+        PrintWriter out = new PrintWriter(remote.getOutputStream());
 
-	// read the data sent. We basically ignore it,
-	// stop reading once a blank line is hit. This
-	// blank line signals the end of the client HTTP
-	// headers.
-	String str = ".";
-	while (str != null && !str.equals("")) str = in.readLine();
+        // read the data sent. We basically ignore it,
+        // stop reading once a blank line is hit. This
+        // blank line signals the end of the client HTTP
+        // headers.
+        String str = ".";
+        String headString = "";
 
-	// Send the response
-	// Send the headers
-	out.println("HTTP/1.0 200 OK");
-	out.println("Content-Type: text/html");
-	out.println("Server: Bot");
-	// this blank line signals the end of the headers
-	out.println("");
-	// Send the HTML page
-	out.println("<H1>Welcome to the Ultra Mini-WebServer</H2>");
-	out.flush();
-	remote.close();
+        while (str != null && !str.equals("")) {
+          str = in.readLine();
+          headString += str;
+        }
+
+        Header h = HeaderParser.parseHeader(headString);
+        
+        // Send the response
+        // Send the headers
+        out.println(h.getHeaders());
+         
+        // this blank line signals the end of the headers
+        out.println("");
+
+        // Send the HTML page
+        out.println("<H1>Welcome to the Ultra Mini-WebServer</H2>");
+        out.flush();
+        remote.close();
       } catch (Exception e) {
-	System.out.println("Error: " + e);
+        System.out.println("Error: " + e);
       }
     }
   }

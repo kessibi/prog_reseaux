@@ -12,8 +12,6 @@ public class WebPing {
 
     String httpServerHost = args[0];
     int httpServerPort = Integer.parseInt(args[1]);
-    httpServerHost = args[0];
-    httpServerPort = Integer.parseInt(args[1]);
 
     try {
       InetAddress addr;
