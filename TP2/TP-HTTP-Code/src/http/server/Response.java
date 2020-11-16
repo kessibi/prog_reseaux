@@ -20,9 +20,16 @@ public class Response {
   public void findFile() throws IOException {
     String fileName = this.resHeader.getFileName();
 
-    // TODO ../www is not the cleanest way to do this
-    Path filePath = Path.of("../www" + fileName);
-    this.resPayload = Files.readString(filePath);
+    try {
+      // TODO ../www is not the cleanest way to do this
+      Path filePath = Path.of("../www" + fileName);
+      this.resPayload = Files.readString(filePath);
+      this.resHeader.setCode(200);
+    
+    } catch (IOException ioe) {
+      this.resPayload = "";
+      this.resHeader.setCode(404);
+    }
   }
 
   public String getPayload() {

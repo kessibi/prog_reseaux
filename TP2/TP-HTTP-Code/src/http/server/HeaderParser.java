@@ -24,10 +24,10 @@ public class HeaderParser {
     if (fileName.equals("/")) {
       fileName += "index.html";
     }
-
+  
     switch (typeMatch.group(1)) {
       case "GET":
-        return new GET(fileName);
+        return new Header("GET", fileName);
       default:
         // TODO throw exception
         break;
