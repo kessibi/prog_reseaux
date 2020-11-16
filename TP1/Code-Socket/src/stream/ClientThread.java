@@ -12,9 +12,11 @@ import java.net.*;
 
 public class ClientThread extends Thread {
   private Socket clientSocket;
+  private EchoServerMultiThreaded serveurMulti;
 
   ClientThread(Socket s, EchoServerMultiThreaded serveur) {
     this.clientSocket = s;
+    this.serveurMulti = serveur;
   }
 
   /**
@@ -28,7 +30,8 @@ public class ClientThread extends Thread {
       PrintStream socOut = new PrintStream(clientSocket.getOutputStream());
       while (true) {
         String line = socIn.readLine();
-        envoyer(line);
+        //envoyer(line);
+        serveurMulti.envoyerMessageATous(line);
         System.out.println("SERVER: " + line);
       }
     } catch (Exception e) {
@@ -37,10 +40,8 @@ public class ClientThread extends Thread {
   }
   public void envoyer(String line) {
     try {
-      PrintStream socOut = new PrintStream(clientSocket.getOutputStream());
-      while (true) {
+        PrintStream socOut = new PrintStream(clientSocket.getOutputStream());
         socOut.println(line);
-      }
     } catch (Exception e) {
       System.err.println("Error in EchoServer:" + e);
     }

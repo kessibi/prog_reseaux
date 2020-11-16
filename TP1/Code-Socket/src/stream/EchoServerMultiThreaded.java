@@ -19,6 +19,8 @@ public class EchoServerMultiThreaded {
    * @param EchoServer port
    *
    **/
+   private List <ClientThread> listCt = new ArrayList<ClientThread>();
+   ServerSocket listenSocket;
 
    public static void main(String args[]) {
      int argInt = Integer.parseInt(args[0]);
@@ -28,9 +30,6 @@ public class EchoServerMultiThreaded {
    }
 
    public EchoServerMultiThreaded (int argInt, int argLength) {
-     ServerSocket listenSocket;
-     List <ClientThread> listCt = new ArrayList<ClientThread>();
-
      if (argLength != 1) {
        System.out.println("Usage: java EchoServer <EchoServer port>");
        System.exit(1);
@@ -42,6 +41,7 @@ public class EchoServerMultiThreaded {
          Socket clientSocket = listenSocket.accept();
          System.out.println("Connexion from:" + clientSocket.getInetAddress());
          ClientThread ct = new ClientThread(clientSocket, this);
+         System.out.println("New thread in the list");
          listCt.add(ct);
          ct.start();
        }
@@ -49,6 +49,14 @@ public class EchoServerMultiThreaded {
        System.err.println("Error in EchoServer:" + e);
      }
 
+   }
+
+   public void envoyerMessageATous (String line) {
+     System.out.println("message va etre envoye");
+     for (int i = 0; i<listCt.size(); i++){
+       System.out.println("message envoye");
+       listCt.get(i).envoyer(line);
+     }
    }
 
 }

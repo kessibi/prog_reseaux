@@ -40,18 +40,19 @@ public class EchoClient {
       System.exit(1);
     }
 
-    String line;
-    while (true) {
-      line = stdIn.readLine();
-      if (line.equals("."))
-        break;
-      socOut.println(line);
-      System.out.println("echo: " + socIn.readLine());
-    }
+    ThreadLecture threadLecture = new ThreadLecture(socIn, stdIn, socOut);
+    ThreadEcriture threadEcriture = new ThreadEcriture(socIn, stdIn, socOut);
+
+    threadLecture.start();
+    threadEcriture.start();
+
+  }
+
+  public void fermerconnexion() {
     socOut.close();
     socIn.close();
     stdIn.close();
     echoSocket.close();
   }
-}
 
+}
