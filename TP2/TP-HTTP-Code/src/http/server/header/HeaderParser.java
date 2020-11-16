@@ -8,9 +8,11 @@ import java.util.regex.Pattern;
  */
 public class HeaderParser {
   public static Header parseHeader(String header) {
-    Pattern getType = Pattern.compile("(\\p{Upper}*)(.*)");
+    Pattern getType = Pattern.compile("(\\p{Upper}*)((?s).*?)");
     Matcher typeMatch = getType.matcher(header);
     typeMatch.matches();
+
+    System.out.println(header);
 
     switch (typeMatch.group(1)) {
       case "GET":

@@ -55,15 +55,15 @@ public class WebServer {
 
         while (str != null && !str.equals("")) {
           str = in.readLine();
-          headString += str;
+          headString += str + "\n";
         }
 
         Header h = HeaderParser.parseHeader(headString);
-        
+
         // Send the response
         // Send the headers
         out.println(h.getHeaders());
-         
+
         // this blank line signals the end of the headers
         out.println("");
 
