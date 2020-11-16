@@ -4,7 +4,9 @@ package http.server;
 
 import http.server.header.*;
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -41,10 +43,13 @@ public class WebServer {
       try {
         // wait for a connection
         Socket remote = s.accept();
+        OutputStream os = remote.getOutputStream();
+        InputStream is = remote.getInputStream();
+
         // remote is now the connected socket
         System.out.println("Connection, sending data.");
-        BufferedReader in = new BufferedReader(new InputStreamReader(remote.getInputStream()));
-        PrintWriter out = new PrintWriter(remote.getOutputStream());
+        BufferedReader in = new BufferedReader(new InputStreamReader(is));
+        PrintWriter out = new PrintWriter(os);
 
         // read the data sent. We basically ignore it,
         // stop reading once a blank line is hit. This
@@ -69,7 +74,8 @@ public class WebServer {
         // Send the headers
         out.println(res.getResponseHeaders());
 
-        // Send the HTML page
+        // Send the response
+        byte[] b = res.getResponseHeaders().getBytes();
         out.println(res.getPayload());
         out.flush();
 
