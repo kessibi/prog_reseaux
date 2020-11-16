@@ -10,6 +10,9 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Example program from Chapter 1 Programming Spiders, Bots and Aggregators in
@@ -38,44 +41,59 @@ public class WebServer {
       return;
     }
 
+    ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(20);
+    Semaphore copyPerformed = new Semaphore(1);
+
     System.out.println("Waiting for connection");
     for (;;) {
       try {
         // wait for a connection
-        Socket remote = s.accept();
-        OutputStream os = remote.getOutputStream();
-        InputStream is = remote.getInputStream();
+        copyPerformed.acquire();
+        Socket accepting = s.accept();
 
-        // remote is now the connected socket
-        System.out.println("Connection, sending data.");
-        BufferedReader in = new BufferedReader(new InputStreamReader(is));
-        PrintWriter out = new PrintWriter(os);
+        // a thread pool takes care of parsing, responding and closing the
+        // socket. Typical models for high-performance servers:
+        // https://www.usenix.org/legacy/publications/library/proceedings/osdi99/full_papers/banga/banga_html/node3.html
+        executor.submit(() -> {
+          Socket remote = accepting;
+          copyPerformed.release();
 
-        String str = ".";
-        String headString = "";
+          try {
+            OutputStream os = remote.getOutputStream();
+            InputStream is = remote.getInputStream();
 
-        while (str != null && !str.equals("")) {
-          str = in.readLine();
-          headString += str + "\n";
-        }
+            BufferedReader in = new BufferedReader(new InputStreamReader(is));
+            PrintWriter out = new PrintWriter(os);
 
-        // parse and build the header
-        Header h = HeaderParser.parseHeader(headString);
+            String str = ".";
+            String headString = "";
 
-        // get the response
-        Response res = new Response(h);
-        res.findFile();
+            while (str != null && !str.equals("")) {
+              str = in.readLine();
+              headString += str + "\n";
+            }
 
-        // Send the response
-        // Send the headers
-        out.println(res.getResponseHeaders());
+            // parse and build the header
+            Header h = HeaderParser.parseHeader(headString);
 
-        // Send the response
-        byte[] b = res.getResponseHeaders().getBytes();
-        out.println(res.getPayload());
-        out.flush();
+            // get the response
+            Response res = new Response(h);
+            res.findFile();
 
-        remote.close();
+            // Send the response
+            // Send the headers
+            out.println(res.getResponseHeaders());
+
+            // Send the response
+            byte[] b = res.getResponseHeaders().getBytes();
+            out.println(res.getPayload());
+            out.flush();
+
+            remote.close();
+          } catch (Exception e) {
+            System.out.println("Error: " + e);
+          }
+        });
       } catch (Exception e) {
         System.out.println("Error: " + e);
       }
