@@ -15,10 +15,16 @@ public class Header {
   private final String method;
   private String mimeType;
   private int contentLength = 1;
+  private boolean isDynamic = false;
 
-  public Header(String meth, String fn) {
+  public Header(String meth, String fn, boolean dynamic) {
     this.method = meth;
     this.fileName = fn;
+    this.isDynamic = dynamic;
+  }
+
+  public boolean getDynamic() {
+    return isDynamic;
   }
 
   public String getFileName() {
