@@ -59,10 +59,5 @@ public class UDPMulticast {
           + "the connection to:" + groupPort);
       System.exit(1);
     }
-
-
-
   }
-
-
 }
