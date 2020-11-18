@@ -1,4 +1,4 @@
-package http.server.header;
+package http.server;
 
 /**
  * HTTP headers

@@ -1,6 +1,5 @@
 package http.server;
 
-import http.server.header.Header;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;

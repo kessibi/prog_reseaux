@@ -1,4 +1,4 @@
-package http.server.header;
+package http.server;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
