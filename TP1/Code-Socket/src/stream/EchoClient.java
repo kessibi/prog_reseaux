@@ -47,12 +47,13 @@ public class EchoClient {
     threadEcriture.start();
 
   }
-
+  /*
   public void fermerconnexion() {
     socOut.close();
     socIn.close();
     stdIn.close();
     echoSocket.close();
   }
+  */
 
 }
