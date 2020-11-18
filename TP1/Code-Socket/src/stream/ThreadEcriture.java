@@ -17,7 +17,7 @@ public class ThreadEcriture extends Thread {
       while (true) {
             try {
                 String line = socIn.readLine();
-                System.out.println("echo: " + line);
+                System.out.println(line);
             } catch (IOException e) {
             }
       }

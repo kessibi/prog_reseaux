@@ -13,6 +13,7 @@ import java.net.*;
 public class ClientThread extends Thread {
   private Socket clientSocket;
   private EchoServerMultiThreaded serveurMulti;
+  private String name;
   private int id;
   private History history;
 
@@ -33,7 +34,9 @@ public class ClientThread extends Thread {
       BufferedReader socIn = null;
       socIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
       PrintStream socOut = new PrintStream(clientSocket.getOutputStream());
-      System.out.println(history.toString());
+      // System.out.println(history.toString());
+      setUserName();
+	  //System.out.println(this.name);
       envoyer(history.toString());
       int ct = 0;
       while (ct < 50) {
@@ -42,7 +45,7 @@ public class ClientThread extends Thread {
           serveurMulti.closeThread(this);
           break;
         }
-        serveurMulti.envoyerMessageATous(line);
+        serveurMulti.envoyerMessageATous(this.name+": "+line);
         System.out.println("SERVER Thread: " + line);
       }
     } catch (Exception e) {
@@ -65,6 +68,20 @@ public class ClientThread extends Thread {
 	    }
 	  }
 	  */
+  public void setUserName() {
+	  envoyer("Choose a name: ");
+	  try {
+		  BufferedReader socIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+		  String name = socIn.readLine();
+		  this.name = name;
+	  } catch (Exception e) {
+	      System.err.println("Error in EchoServer:" + e);
+	  }
+  }
+  
+  public String getUserName() {
+	  return name;
+  }
   
   public void envoyer(String line) {
     try {

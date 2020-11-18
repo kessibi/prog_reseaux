@@ -27,9 +27,12 @@ public class History {
 	
 	@Override
 	public String toString() {
-		String output = "History\n";
+		String output = "History:";
+		if (messages.size()<1) {
+			output += " No messages so far. Start a conversation.";
+		}
 		for (String message : messages) {
-			output = output+message+"\n";
+			output = output+"\n"+message;
 		}
 		return output;
 	}
