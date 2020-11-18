@@ -66,4 +66,14 @@ public class EchoServerMultiThreaded {
 	   }
    }
 
+   public void closeThread (ClientThread client) {
+     client.interrupt();
+     for (int i = 0; i<listCt.size(); i++){
+       if (client == listCt.get(i)){
+         System.out.println("thread stop");
+         listCt.remove(i);
+       }
+     }
+   }
+
 }

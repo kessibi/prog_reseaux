@@ -35,11 +35,15 @@ public class ClientThread extends Thread {
       PrintStream socOut = new PrintStream(clientSocket.getOutputStream());
       System.out.println(history.toString());
       envoyer(history.toString());
-      while (true) {
+      int ct = 0;
+      while (ct < 50) {
         String line = socIn.readLine();
-        // if (line != null) history.addMessage(line);
+        if (line == null){
+          serveurMulti.closeThread(this);
+          break;
+        }
         serveurMulti.envoyerMessageATous(line);
-        System.out.println("SERVER: " + line);
+        System.out.println("SERVER Thread: " + line);
       }
     } catch (Exception e) {
       System.err.println("Error in EchoServer:" + e);

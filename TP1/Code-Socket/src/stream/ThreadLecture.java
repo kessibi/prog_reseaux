@@ -7,11 +7,13 @@ public class ThreadLecture extends Thread {
   BufferedReader socIn;
   BufferedReader stdIn;
   PrintStream socOut;
+  EchoClient client;
 
-  public ThreadLecture (BufferedReader socIn, BufferedReader stdIn, PrintStream socOut) {
+  public ThreadLecture (BufferedReader socIn, BufferedReader stdIn, PrintStream socOut, EchoClient client) {
     this.socIn = socIn;
     this.stdIn = stdIn;
     this.socOut = socOut;
+    this.client = client;
   }
 
     public void run(){
@@ -20,7 +22,7 @@ public class ThreadLecture extends Thread {
                 String line;
                 line = stdIn.readLine();
                 if (line.equals("."))
-                  break;
+                  client.fermerconnexion();
                 socOut.println(line);
             } catch (IOException e) {
             }
