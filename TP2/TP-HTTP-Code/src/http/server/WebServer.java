@@ -82,10 +82,12 @@ public class WebServer {
 
             remote.close();
           } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Error: " + e);
           }
         });
       } catch (Exception e) {
+        e.printStackTrace();
         System.out.println("Error: " + e);
       }
     }
