@@ -45,15 +45,20 @@ public class Response {
       String[] cmd = {"sh", rootDir + this.resHeader.getFileName()};
       p = Runtime.getRuntime().exec(cmd);
       p.waitFor();
-      BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-      String line;
-      line = reader.lines().collect(Collectors.joining());
-      this.resPayload = line.getBytes();
 
-      this.resHeader.setMime("text/html");
-      this.resHeader.setCode(200);
-      this.resHeader.setLength(this.resPayload.length);
+      // 0 = exited without errors, else: failed
+      if (p.exitValue() != 0) {
+        this.fileNotFound();
+      } else {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line;
+        line = reader.lines().collect(Collectors.joining());
+        this.resPayload = line.getBytes();
 
+        this.resHeader.setMime("text/html");
+        this.resHeader.setCode(200);
+        this.resHeader.setLength(this.resPayload.length);
+      }
     } catch (IOException e) {
       e.printStackTrace();
       this.fileNotFound();
