@@ -28,7 +28,7 @@ public class Header {
     String res = protocol + codeToStatus() + "\n";
     res += server + "\n";
     res += content + this.mimeType + "\n";
-    res += length + contentLength + "\n";
+    res += length + contentLength + "\n\n";
     return res;
   }
 

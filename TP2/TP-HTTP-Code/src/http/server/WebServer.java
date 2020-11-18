@@ -7,9 +7,11 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.DataOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.Charset;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -60,6 +62,7 @@ public class WebServer {
 
           try {
             OutputStream os = remote.getOutputStream();
+            DataOutputStream dos = new DataOutputStream(os);
             InputStream is = remote.getInputStream();
 
             BufferedReader in = new BufferedReader(new InputStreamReader(is));
@@ -82,12 +85,12 @@ public class WebServer {
 
             // Send the response
             // Send the headers
-            out.println(res.getResponseHeaders());
+            dos.writeUTF(res.getResponseHeaders());
 
             // Send the response
-            byte[] b = res.getResponseHeaders().getBytes();
-            out.println(res.getPayload());
-            out.flush();
+            byte[] sentBytes = res.getPayload();
+            dos.write(sentBytes, 0, sentBytes.length);
+            dos.flush();
 
             remote.close();
           } catch (Exception e) {

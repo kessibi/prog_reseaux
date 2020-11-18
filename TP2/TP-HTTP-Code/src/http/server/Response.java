@@ -1,9 +1,11 @@
 package http.server;
 
 import http.server.header.Header;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.charset.MalformedInputException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -14,42 +16,40 @@ import java.nio.file.Path;
 public class Response {
   private static final String rootDir = "../www";
   private Header resHeader;
-  private String resPayload;
+  private byte[] resPayload;
 
   public Response(Header h) {
     this.resHeader = h;
   }
 
-  public void findFile() throws IOException {
-    String fileName = this.resHeader.getFileName();
-    Path filePath;
-
+  public void findFile() {
     try {
-      // TODO ../www is not the cleanest way to do this
-      filePath = Path.of(rootDir + fileName);
-      this.resPayload = Files.readString(filePath, StandardCharsets.UTF_8);
+      String fileName = rootDir + this.resHeader.getFileName();
+      Path filePath = Path.of(fileName);
+      File fileSent = new File(fileName);
+      this.resPayload = new byte[(int) fileSent.length()];
+      FileInputStream fis = new FileInputStream(fileSent);
+      BufferedInputStream bis = new BufferedInputStream(fis);
+      bis.read(this.resPayload, 0, this.resPayload.length);
 
       this.resHeader.setMime(Files.probeContentType(filePath));
       this.resHeader.setCode(200);
-      this.resHeader.setLength(this.resPayload.length());
+      this.resHeader.setLength(this.resPayload.length);
 
-    } catch (MalformedInputException mie) {
-      // in case a file is not UTF-8 encoded (eg: favicon.ico)
-      filePath = Path.of(rootDir + fileName);
-      this.resPayload = Files.readString(filePath, StandardCharsets.ISO_8859_1);
-
-      this.resHeader.setMime(Files.probeContentType(filePath));
-      this.resHeader.setCode(200);
-      this.resHeader.setLength(this.resPayload.length());
-
+    } catch (FileNotFoundException fnfe) {
+      fnfe.printStackTrace();
+      this.resPayload = new byte[0];
+      this.resHeader.setCode(404);
+      this.resHeader.setLength(0);
     } catch (IOException ioe) {
       ioe.printStackTrace();
-      this.resPayload = "";
+      this.resPayload = new byte[0];
       this.resHeader.setCode(404);
+      this.resHeader.setLength(0);
     }
   }
 
-  public String getPayload() {
+  public byte[] getPayload() {
     return this.resPayload;
   }
 
