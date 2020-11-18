@@ -28,10 +28,15 @@ public class ClientThread extends Thread {
       BufferedReader socIn = null;
       socIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
       PrintStream socOut = new PrintStream(clientSocket.getOutputStream());
-      while (true) {
+      int ct = 0;
+      while (ct < 50) {
         String line = socIn.readLine();
+        if (line == null){
+          serveurMulti.closeThread(this);
+          break;
+        }
         serveurMulti.envoyerMessageATous(line);
-        System.out.println("SERVER: " + line);
+        System.out.println("SERVER Thread: " + line);
       }
     } catch (Exception e) {
       System.err.println("Error in EchoServer:" + e);
