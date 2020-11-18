@@ -1,6 +1,11 @@
 #!/bin/bash
 
 form=$1
+formLen=$(echo $form | wc -c)
+
+if [ $formLen -le 1 ]; then
+  exit 1
+fi
 
 parse_names() {
   first=$(echo $form | sed 's/&/\n/g' | sed 's/.*=//g' | head -1)
