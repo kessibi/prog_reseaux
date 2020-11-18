@@ -52,7 +52,6 @@ public class EchoServerMultiThreaded {
    }
 
    public void envoyerMessageATous (String line) {
-     System.out.println("message va etre envoye");
      for (int i = 0; i<listCt.size(); i++){
        System.out.println("message envoye");
        listCt.get(i).envoyer(line);

@@ -30,7 +30,6 @@ public class ClientThread extends Thread {
       PrintStream socOut = new PrintStream(clientSocket.getOutputStream());
       while (true) {
         String line = socIn.readLine();
-        //envoyer(line);
         serveurMulti.envoyerMessageATous(line);
         System.out.println("SERVER: " + line);
       }
