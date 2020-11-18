@@ -33,8 +33,14 @@
         </form>
       </li>
     </ol>
+
+    <h2>JS adder script</h2>
+    <input id="nb1" name="nb1" type="number">
+    <input id="nb2" name="nb2" type="number">
+    <input id="compute" type="submit">
+    <p>The result is: <span id="result"></span></p>
     
-    <h2>Media files</h2>
+    <h2>MP3 files</h2>
     <audio controls="controls">
       <source src="/calvert.mp3" type="audio/mpeg">
       Your browser does not support the audio element
@@ -47,6 +53,17 @@
       <source src="/calvert.mp3" type="audio/mpeg">
       Your browser does not support the audio element
     </audio>
+    
+    <h2>MP4 files</h2>
+    <video width=200 controls="controls">
+      <source src="/video.mp4">
+    </video>
+    <video width=200 controls="controls">
+      <source src="/video.mp4">
+    </video>
+    <video width=200 controls="controls">
+      <source src="/video.mp4">
+    </video>
 
     <h2>JPEG Images</h2>
     <img src="cubes.jpg" width=200>
@@ -265,6 +282,16 @@ Box drawing alignment tests:                                          █
 
     </pre>
   </body>
+  <script>
+    const add1 = document.querySelector("#nb1");
+    const add2 = document.querySelector("#nb2");
+    const result = document.querySelector("#result");
+    const computeBtn = document.querySelector("#compute");
+
+    computeBtn.addEventListener('click', () => {
+      result.innerHTML = Number(add1.value) + Number(add2.value);
+    });
+  </script>
 </html>
 
 
