@@ -6,10 +6,8 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.Charset;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -64,7 +62,6 @@ public class WebServer {
             InputStream is = remote.getInputStream();
 
             BufferedReader in = new BufferedReader(new InputStreamReader(is));
-            PrintWriter out = new PrintWriter(os);
 
             String str = ".";
             String headString = "";

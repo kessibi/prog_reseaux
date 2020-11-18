@@ -12,7 +12,7 @@ public class Header {
 
   private int code = 200;
   private String fileName;
-  private String method;
+  private final String method;
   private String mimeType;
   private int contentLength = 1;
 

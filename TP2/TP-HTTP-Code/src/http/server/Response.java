@@ -30,6 +30,7 @@ public class Response {
       FileInputStream fis = new FileInputStream(fileSent);
       BufferedInputStream bis = new BufferedInputStream(fis);
       bis.read(this.resPayload, 0, this.resPayload.length);
+      bis.close();
 
       this.resHeader.setMime(Files.probeContentType(filePath));
       this.resHeader.setCode(200);
