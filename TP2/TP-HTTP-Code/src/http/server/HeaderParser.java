@@ -30,7 +30,7 @@ public class HeaderParser {
 
     Pattern getType = Pattern.compile("^([A-Z]*)(?s)(.*)");
     Matcher typeMatch = getType.matcher(header);
-    typeMatch.matches();
+    typeMatch.find();
 
     // checking wether the method is correct or not
     String meth = typeMatch.group(1);
@@ -41,7 +41,10 @@ public class HeaderParser {
       }
     }
 
+    String content = "";
+
     if (recognizedMeth == false) {
+      // unsupported method
       return null;
     } else if (meth.equals("POST")) {
       if (header.contains("x-www-form-urlencoded")) {
@@ -50,11 +53,11 @@ public class HeaderParser {
         lengthMatch.find();
 
         int contLength = Integer.parseInt(lengthMatch.group(1));
-
         try {
-          char[] e = new char[contLength];
-          in.read(e, 0, contLength);
-          System.out.println(e);
+          char[] form = new char[contLength];
+          in.read(form, 0, contLength);
+          content = String.valueOf(form);
+
         } catch (IOException ioe) {
         }
       }
@@ -62,7 +65,7 @@ public class HeaderParser {
 
     Pattern getFile = Pattern.compile("^(.*)(?s)(HTTP)(.*)");
     Matcher fileMatch = getFile.matcher(typeMatch.group(2));
-    fileMatch.matches();
+    fileMatch.find();
 
     // prepare fileName from regex
     String fileName = fileMatch.group(1);
@@ -79,12 +82,6 @@ public class HeaderParser {
       isDynamic = true;
     }
 
-    for (String method : supportedMethods) {
-      if (meth.equals(method)) {
-        return new Header(meth, fileName, isDynamic);
-      }
-    }
-
-    return null;
+    return new Header(meth, fileName, isDynamic, content);
   }
 }

@@ -14,13 +14,15 @@ public class Header {
   private String fileName;
   private final String method;
   private String mimeType;
+  private boolean isDynamic;
+  private String form;
   private int contentLength = 1;
-  private boolean isDynamic = false;
 
-  public Header(String meth, String fn, boolean dynamic) {
+  public Header(String meth, String fn, boolean dynamic, String form) {
     this.method = meth;
     this.fileName = fn;
     this.isDynamic = dynamic;
+    this.form = form;
   }
 
   public boolean getDynamic() {
@@ -33,6 +35,10 @@ public class Header {
 
   public String getMethod() {
     return this.method;
+  }
+
+  public String getForm() {
+    return this.form;
   }
 
   public String getHeaders() {

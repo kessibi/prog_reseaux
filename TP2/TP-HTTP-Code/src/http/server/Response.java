@@ -42,7 +42,7 @@ public class Response {
     // https://www.netjstech.com/2016/10/how-to-run-shell-script-from-java-program.html
     Process p;
     try {
-      String[] cmd = {"sh", rootDir + this.resHeader.getFileName()};
+      String[] cmd = {"sh", rootDir + this.resHeader.getFileName(), this.resHeader.getForm()};
       p = Runtime.getRuntime().exec(cmd);
       p.waitFor();
 
