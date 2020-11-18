@@ -48,11 +48,13 @@ public class EchoClient {
 
   }
 
+  /*
   public void fermerconnexion() {
     socOut.close();
     socIn.close();
     stdIn.close();
     echoSocket.close();
   }
+  */
 
 }
