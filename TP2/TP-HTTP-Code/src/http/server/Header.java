@@ -30,6 +30,11 @@ public class Header {
   public String getFileName() {
     return this.fileName;
   }
+
+  public String getMethod() {
+    return this.method;
+  }
+
   public String getHeaders() {
     String res = protocol + codeToStatus() + "\n";
     res += server + "\n";
