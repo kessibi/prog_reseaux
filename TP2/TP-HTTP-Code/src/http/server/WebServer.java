@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.stream.Collectors;
 
 /**
  * Example program from Chapter 1 Programming Spiders, Bots and Aggregators in
@@ -63,16 +64,8 @@ public class WebServer {
 
             BufferedReader in = new BufferedReader(new InputStreamReader(is));
 
-            String str = ".";
-            String headString = "";
-
-            while (str != null && !str.equals("")) {
-              str = in.readLine();
-              headString += str + "\n";
-            }
-
             // parse and build the header
-            Header h = HeaderParser.parseHeader(headString);
+            Header h = HeaderParser.parseHeader(in);
 
             // get the response
             Response res = new Response(h);
