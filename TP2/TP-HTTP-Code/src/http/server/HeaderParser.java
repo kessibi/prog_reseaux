@@ -11,6 +11,13 @@ import java.util.regex.Pattern;
 public class HeaderParser {
   private static final String[] supportedMethods = {"GET", "POST", "PUT", "DELETE", "HEAD"};
 
+  /**
+   * Reads the header from the buffer, line after line
+   *
+   * @param in the BufferedReader to read lines from
+   *
+   * @return the header in a string format
+   */
   public static String readBuf(BufferedReader in) {
     String header = "";
     String str = "";
@@ -25,6 +32,14 @@ public class HeaderParser {
     return header;
   }
 
+  /**
+   * From the string retrieved from the socket, will parse it to understand
+   * what exactly it is the client needs
+   *
+   * @param in the BufferedReader to read data from
+   *
+   * @return a constructed Header object or null
+   */
   public static Header parseHeader(BufferedReader in) {
     String header = readBuf(in);
 

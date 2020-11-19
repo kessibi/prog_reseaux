@@ -1,8 +1,7 @@
 package http.server;
 
 /**
- * HTTP headers
- *
+ * HTTP header with relevant data: protocol, server, content, length, ...
  */
 public class Header {
   private final String protocol = "HTTP/1.0 ";
@@ -14,10 +13,18 @@ public class Header {
   private String fileName;
   private final String method;
   private String mimeType;
-  private boolean isDynamic;
+  private boolean isDynamic = false;
   private String form;
   private int contentLength = 1;
 
+  /**
+   * Header construction
+   *
+   * @param meth Method used (eg: GET)
+   * @param fn the file name in the system
+   * @param dynamic if the file requested is static or dynamic
+   * @param form the possible form (eg: for a POST request)
+   */
   public Header(String meth, String fn, boolean dynamic, String form) {
     this.method = meth;
     this.fileName = fn;
@@ -41,6 +48,11 @@ public class Header {
     return this.form;
   }
 
+  /**
+   * Basically a toString of the header respecting HTTP/1.0 standards
+   *
+   * @return the header in HTTP/1.0 format
+   */
   public String getHeaders() {
     String res = protocol + codeToStatus() + "\n";
     res += server + "\n";
@@ -61,6 +73,9 @@ public class Header {
     this.contentLength = len;
   }
 
+  /**
+   * Will transform the code (404, 200, ...) to the actuall HTTP status
+   */
   private String codeToStatus() {
     switch (this.code) {
       case 200:

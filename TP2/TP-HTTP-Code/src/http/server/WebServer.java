@@ -3,6 +3,7 @@ package http.server;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -14,27 +15,31 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 
 /**
- * Example program from Chapter 1 Programming Spiders, Bots and Aggregators in
- * Java Copyright 2001 by Jeff Heaton
- *
  * WebServer is a very simple web-server. Any request is responded with a very
- * simple web-page.
+ * simple web-page. We have examples of different file types and request methods
  *
- * @author Jeff Heaton
- * @version 1.0
  */
 public class WebServer {
+  private int port;
+
   /**
    * WebServer constructor.
+   *
+   * @param port The port the server will be listening from and accepting
+   * requests
    */
+  public WebServer(int port) {
+    this.port = port;
+  }
+
   protected void start() {
     ServerSocket s;
 
-    System.out.println("Webserver starting up on port 3000");
+    System.out.println("Webserver starting up on port " + this.port);
     System.out.println("(press ctrl-c to exit)");
     try {
       // create the main server socket
-      s = new ServerSocket(3000);
+      s = new ServerSocket(this.port);
     } catch (Exception e) {
       System.out.println("Error: " + e);
       return;
@@ -81,14 +86,12 @@ public class WebServer {
             dos.flush();
 
             remote.close();
-          } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error: " + e);
+          } catch (IOException ioe) {
+            ioe.printStackTrace();
           }
         });
       } catch (Exception e) {
         e.printStackTrace();
-        System.out.println("Error: " + e);
       }
     }
   }
@@ -96,11 +99,15 @@ public class WebServer {
   /**
    * Start the application.
    *
-   * @param args
-   *            Command line parameters are not used.
+   * @param args Will fetch the port from the command-line
    */
   public static void main(String args[]) {
-    WebServer ws = new WebServer();
+    if (args.length != 1) {
+      System.err.println("usage: java Webserver <port>");
+      System.exit(1);
+    }
+
+    WebServer ws = new WebServer(Integer.parseInt(args[0]));
     ws.start();
   }
 }

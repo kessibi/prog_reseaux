@@ -12,8 +12,7 @@ import java.nio.file.Path;
 import java.util.stream.Collectors;
 
 /**
- * HTTP response
- *
+ * HTTP response, built from the Header and sent back to the client
  */
 public class Response {
   private static final String rootDir = "../www";
@@ -24,12 +23,19 @@ public class Response {
     this.resHeader = h;
   }
 
+  /**
+   * Helper setting the response header to 404 and empty content
+   */
   public void fileNotFound() {
     this.resPayload = new byte[0];
     this.resHeader.setCode(404);
     this.resHeader.setLength(0);
   }
 
+  /*
+   * Will fetch the file from the file system by first checking if it is
+   * dynamic or static
+   */
   public void findFile() {
     if (this.resHeader.getDynamic()) {
       this.findDynamicFile();
@@ -38,6 +44,10 @@ public class Response {
     }
   }
 
+  /**
+   * From the file, first runs it (currently only Shell scripts work) and
+   * return stdout to the socket.
+   */
   public void findDynamicFile() {
     // https://www.netjstech.com/2016/10/how-to-run-shell-script-from-java-program.html
     Process p;
@@ -68,6 +78,10 @@ public class Response {
     }
   }
 
+  /**
+   * Finds the file in the system, finds its MIME type and writes it to the
+   * payload
+   */
   public void findStaticFile() {
     try {
       String fileName = rootDir + this.resHeader.getFileName();
