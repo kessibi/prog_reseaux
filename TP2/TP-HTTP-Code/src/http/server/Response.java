@@ -27,6 +27,7 @@ public class Response {
    * Helper setting the response header to 404 and empty content
    */
   public void fileNotFound() {
+    System.err.println("File: " + this.resHeader.getFileName() + " not found");
     this.resPayload = new byte[0];
     this.resHeader.setCode(404);
     this.resHeader.setLength(0);
@@ -98,10 +99,8 @@ public class Response {
       this.resHeader.setLength(this.resPayload.length);
 
     } catch (FileNotFoundException fnfe) {
-      fnfe.printStackTrace();
       this.fileNotFound();
     } catch (IOException ioe) {
-      ioe.printStackTrace();
       this.fileNotFound();
     }
   }
