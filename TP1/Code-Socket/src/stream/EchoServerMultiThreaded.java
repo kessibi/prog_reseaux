@@ -18,7 +18,7 @@ public class EchoServerMultiThreaded {
    * @param EchoServer port
    *
    **/
-  private HashMap<UUID, ClientThread> clientsOn = new HashMap<UUID, ClientThread>();
+  private HashMap<UUID, ClientThread> clientsOn;
   ServerSocket listenSocket;
   private History history;
 
@@ -34,13 +34,16 @@ public class EchoServerMultiThreaded {
 
   public EchoServerMultiThreaded(int port) {
     history = new History();
+    clientsOn = new HashMap<UUID, ClientThread>();
 
     try {
       listenSocket = new ServerSocket(port);
       System.out.println("Server listening on port " + port);
+
       while (true) {
         Socket clientSocket = listenSocket.accept();
-        System.out.println("Connexion from:" + clientSocket.getInetAddress());
+        System.out.println("Connection from: " + clientSocket.getInetAddress());
+
         UUID uuid = UUID.randomUUID();
         ClientThread ct = new ClientThread(clientSocket, uuid, this, history);
         clientsOn.put(uuid, ct);
@@ -51,14 +54,19 @@ public class EchoServerMultiThreaded {
     }
   }
 
-  public void envoyerMessageATous(String line) {
-    history.addMessage("new message: " + line);
-    clientsOn.forEach((uuid, client) -> { client.envoyer(line); });
+  public void sendToAll(String line) {
+    history.addMessage(line);
+    clientsOn.forEach((uuid, client) -> client.sendToClient(line));
   }
 
   public void closeThread(ClientThread client) {
+    String name = client.getUserName();
+
     UUID clientUUID = client.getUUID();
     clientsOn.remove(clientUUID);
     client.interrupt();
+
+    // warn others the client left
+    sendToAll(name + " has left the chatroom.");
   }
 }

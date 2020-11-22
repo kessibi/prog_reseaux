@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class ClientThread extends Thread {
   private Socket clientSocket;
-  private EchoServerMultiThreaded serveurMulti;
+  private EchoServerMultiThreaded server;
   private String name;
   private History history;
   private UUID uuid;
@@ -21,9 +21,16 @@ public class ClientThread extends Thread {
   ClientThread(Socket s, UUID id, EchoServerMultiThreaded server, History history) {
     this.clientSocket = s;
     this.uuid = id;
-    this.serveurMulti = server;
+    this.server = server;
     this.history = history;
-    // history.printAllMessages();
+  }
+
+  public UUID getUUID() {
+    return this.uuid;
+  }
+
+  public String getUserName() {
+    return name;
   }
 
   /**
@@ -32,60 +39,55 @@ public class ClientThread extends Thread {
    **/
   public void run() {
     try {
-      BufferedReader socIn = null;
-      socIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+      String message;
+      InputStream is = clientSocket.getInputStream();
+      BufferedReader socIn = new BufferedReader(new InputStreamReader(is));
       PrintStream socOut = new PrintStream(clientSocket.getOutputStream());
-      // System.out.println(history.toString());
+
       setUserName();
-      // System.out.println(this.name);
-      envoyer(history.toString());
-      int ct = 0;
-      while (ct < 50) {
-        String line = socIn.readLine();
-        if (line == null) {
-          serveurMulti.closeThread(this);
-          break;
+      sendToClient(history.toString());
+
+      while ((message = socIn.readLine()) != null) {
+        switch (message) {
+          case "":
+            // ignoring blank messages for now
+            break;
+          case "quit":
+            server.closeThread(this);
+            break;
+          default:
+            server.sendToAll(this.name + ": " + message);
         }
-        serveurMulti.envoyerMessageATous(this.name + ": " + line);
-        System.out.println("SERVER Thread: " + line);
       }
+      
+      // the client has left without warning the server
+      server.closeThread(this);
+          
+
     } catch (Exception e) {
-      System.err.println("Error in EchoServer:" + e);
+      System.err.println("Error in ClientThread:" + e);
     }
-  }
-
-  /*
-  public void sendHistory() {
-            try {
-                PrintStream socOut = new PrintStream(clientSocket.getOutputStream());
-                socOut.println(history.toString());
-            } catch (Exception e) {
-              System.err.println("Error in EchoServer:" + e);
-            }
-          }
-        */
-
-  public UUID getUUID() {
-    return this.uuid;
   }
 
   public void setUserName() {
-    envoyer("Choose a name: ");
     try {
-      BufferedReader socIn =
-          new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-      String name = socIn.readLine();
+      InputStream is = clientSocket.getInputStream();
+      BufferedReader socIn = new BufferedReader(new InputStreamReader(is));
+      String name = "";
+
+      while (name.equals("")) {
+        sendToClient("Choose a name: ");
+        name = socIn.readLine();
+      }
       this.name = name;
+    
+      server.sendToAll(name + " has joined the chatroom.");
     } catch (Exception e) {
       System.err.println("Error in EchoServer:" + e);
     }
   }
 
-  public String getUserName() {
-    return name;
-  }
-
-  public void envoyer(String line) {
+  public void sendToClient(String line) {
     try {
       PrintStream socOut = new PrintStream(clientSocket.getOutputStream());
       socOut.println(line);

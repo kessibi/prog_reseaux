@@ -48,9 +48,8 @@ public class EchoClient {
     threadEcriture.start();
   }
 
-  public void fermerconnexion() {
+  public void closeConnection() {
     try {
-      System.out.println("fermeture de l'echo");
       socOut.close();
       socIn.close();
       stdIn.close();
