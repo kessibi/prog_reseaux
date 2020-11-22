@@ -9,8 +9,8 @@ package stream;
 
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class EchoServerMultiThreaded {
   /**
@@ -18,7 +18,7 @@ public class EchoServerMultiThreaded {
    * @param EchoServer port
    *
    **/
-  private List<ClientThread> listCt = new ArrayList<ClientThread>();
+  private HashMap<UUID, ClientThread> clientsOn = new HashMap<UUID, ClientThread>();
   ServerSocket listenSocket;
   private History history;
 
@@ -34,8 +34,6 @@ public class EchoServerMultiThreaded {
 
   public EchoServerMultiThreaded(int port) {
     history = new History();
-    // history.printAllMessages();
-    int threadId = 0;
 
     try {
       listenSocket = new ServerSocket(port);
@@ -43,10 +41,9 @@ public class EchoServerMultiThreaded {
       while (true) {
         Socket clientSocket = listenSocket.accept();
         System.out.println("Connexion from:" + clientSocket.getInetAddress());
-        threadId += 1;
-        ClientThread ct = new ClientThread(clientSocket, this, threadId, history);
-        System.out.println("New thread in the list " + ct.getId());
-        listCt.add(ct);
+        UUID uuid = UUID.randomUUID();
+        ClientThread ct = new ClientThread(clientSocket, uuid, this, history);
+        clientsOn.put(uuid, ct);
         ct.start();
       }
     } catch (Exception e) {
@@ -55,22 +52,13 @@ public class EchoServerMultiThreaded {
   }
 
   public void envoyerMessageATous(String line) {
-    if (line != null) {
-      history.addMessage("new message: " + line);
-    }
-    for (int i = 0; i < listCt.size(); i++) {
-      System.out.println("message envoye");
-      listCt.get(i).envoyer(line);
-    }
+    history.addMessage("new message: " + line);
+    clientsOn.forEach((uuid, client) -> { client.envoyer(line); });
   }
 
   public void closeThread(ClientThread client) {
+    UUID clientUUID = client.getUUID();
+    clientsOn.remove(clientUUID);
     client.interrupt();
-    for (int i = 0; i < listCt.size(); i++) {
-      if (client == listCt.get(i)) {
-        System.out.println("thread stop");
-        listCt.remove(i);
-      }
-    }
   }
 }
