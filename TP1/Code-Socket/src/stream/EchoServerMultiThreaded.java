@@ -46,7 +46,7 @@ public class EchoServerMultiThreaded {
     // create a new file to save the chat
     try {
     	LocalDateTime time = LocalDateTime.now();
-    	filename = "../chats/chat_"+time.toString()+".txt";
+    	filename = "../chats/chat_"+String.valueOf(port) +".txt";
 		chat = new File(filename);
 		if (chat.createNewFile()) {
 		  System.out.println("File created: " + chat.getName());
@@ -60,7 +60,16 @@ public class EchoServerMultiThreaded {
 		        e.printStackTrace();
 		    }
 		} else {
-		  System.out.println("File already exists.");
+		  System.out.println("Load chat history.");
+		  try {
+		        FileWriter chatWriter = new FileWriter(filename, true);
+		        chatWriter.append(time.getDayOfWeek()+ " " + time.getMonth().toString() + " " + String.valueOf(time.getDayOfMonth()));
+		        chatWriter.append(System.getProperty("line.separator"));
+		        chatWriter.close();
+		    } catch (IOException e) {
+		        System.out.println("An error occurred while writing.");
+		        e.printStackTrace();
+		    }
 	    }
 	} catch (IOException e) {
 	    System.out.println("An error occurred.");
