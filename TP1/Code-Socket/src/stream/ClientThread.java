@@ -75,8 +75,11 @@ public class ClientThread extends Thread {
       String name = "";
 
       while (name.equals("")) {
-        sendToClient("Choose a name: ");
-        name = socIn.readLine();
+    	  if (name == "quit") {
+    		  server.closeThread(this);
+    	  }
+    	  sendToClient("Choose a name: ");
+    	  name = socIn.readLine();
       }
       this.name = name;
 
