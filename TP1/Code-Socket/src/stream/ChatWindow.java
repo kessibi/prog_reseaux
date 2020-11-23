@@ -26,6 +26,8 @@ public class ChatWindow extends JFrame implements ActionListener {
 	private JButton envoyer;
 	private JTextField ip;
 	private JTextField port;
+	private JTextField response;
+	private JTextArea grandeZone;
 	Socket echoSocket = null;
 	PrintStream socOut = null;
 	BufferedReader socIn = null;
@@ -46,12 +48,12 @@ public class ChatWindow extends JFrame implements ActionListener {
         add(panelPrincipal);
         
         //zone de texte du chat
-        JTextArea grandeZone = new JTextArea();
+        grandeZone = new JTextArea();
         grandeZone.setBackground(Color.white);
         grandeZone.setBounds(50, 100, WIDTH-100, HEIGHT-300);
         
         //texte a renvoyer chat
-        JTextField response = new JTextField();
+        response = new JTextField();
         response.setBackground(Color.white);
         response.setBounds(50, 700, WIDTH-100, 20);
         
@@ -116,6 +118,7 @@ public class ChatWindow extends JFrame implements ActionListener {
 			}
 			if (o == envoyer) {
 				System.out.println("Envoyer IHM");
+				String text_to_send = response.getText();
 			}
 		};
 }
