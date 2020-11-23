@@ -198,7 +198,6 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
 		}
 
 		public void estDeconnecte () {
-
 			etat_connexion.setText("Connection status: disconnected");
 	        etat_connexion.setForeground(new Color(176, 0, 53));
 		}
