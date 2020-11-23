@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.awt.Color;
 
 public class ChatWindow extends JFrame implements ActionListener {
@@ -95,14 +96,20 @@ public class ChatWindow extends JFrame implements ActionListener {
 			Object o = evt.getSource();
 			if (o == connexion) {
 				System.out.println("Connexion IHM");
+				String ip_nom = ip.getText();
 				String port_nom = port.getText();
 				try {
-					echoSocket = new Socket(ip.getText(), Integer.valueOf(port_nom).intValue());
+					echoSocket = new Socket(ip_nom, Integer.valueOf(port_nom).intValue());
 					socIn = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
 				    socOut = new PrintStream(echoSocket.getOutputStream());
-				} catch (NumberFormatException | IOException e) {
-					e.printStackTrace();
-				}
+				} catch (UnknownHostException e) {
+				      System.err.println("Don't know about host:" + ip_nom);
+				      System.exit(1);
+				    } catch (IOException e) {
+				      System.err.println("Couldn't get I/O for "
+				          + "the connection to:" + ip_nom);
+				      System.exit(1);
+			}
 			}
 			if (o == deconnexion) {
 				System.out.println("Deconnexion IHM");
