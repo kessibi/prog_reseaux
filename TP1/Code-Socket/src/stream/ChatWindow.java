@@ -8,8 +8,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import java.awt.event.*;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -111,7 +109,9 @@ public class ChatWindow extends JFrame implements ActionListener {
 				      System.err.println("Couldn't get I/O for "
 				          + "the connection to:" + ip_nom);
 				      System.exit(1);
-			}
+				    }
+				ThreadEcritureIHM threadEcriture = new ThreadEcritureIHM(socIn, grandeZone);
+			    threadEcriture.start();
 			}
 			if (o == deconnexion) {
 				System.out.println("Deconnexion IHM");
@@ -120,6 +120,7 @@ public class ChatWindow extends JFrame implements ActionListener {
 				System.out.println("Envoyer IHM");
 				String text_to_send = response.getText();
 				socOut.println(text_to_send);
+				response.setText("");
 			}
 		};
 }
