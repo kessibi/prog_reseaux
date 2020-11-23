@@ -20,7 +20,6 @@ public class EchoClient {
       System.out.println("Usage: java EchoClient <EchoServer host> <EchoServer port>");
       System.exit(1);
     }
-
     EchoClient client = new EchoClient(args[0], args[1]);
   }
 
@@ -30,7 +29,7 @@ public class EchoClient {
       echoSocket = new Socket(arg0, Integer.valueOf(arg1).intValue());
       socIn = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
       socOut = new PrintStream(echoSocket.getOutputStream());
-      stdIn = new BufferedReader(new InputStreamReader(System.in));
+      stdIn = new BufferedReader(new InputStreamReader(System.in));;
 
     } catch (UnknownHostException e) {
       System.err.println("Don't know about host:" + arg0);
