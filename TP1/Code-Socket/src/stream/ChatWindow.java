@@ -119,6 +119,7 @@ public class ChatWindow extends JFrame implements ActionListener {
 			if (o == envoyer) {
 				System.out.println("Envoyer IHM");
 				String text_to_send = response.getText();
+				socOut.println(text_to_send);
 			}
 		};
 }
