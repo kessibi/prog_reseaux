@@ -93,10 +93,10 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
         //bouton connexion 
 
         connexion = new JButton ("enter the chat");
-        connexion.setBounds(400, 35, 100, 20);
+        connexion.setBounds(300, 35, 150, 20);
         connexion.addActionListener(this);
         deconnexion = new JButton ("leave the chat");
-        deconnexion.setBounds(550, 35, 100, 20);
+        deconnexion.setBounds(500, 35, 150, 20);
         deconnexion.addActionListener(this);
         deconnexion.setEnabled(false);
         
@@ -188,13 +188,13 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
 		}
 		
 		public void estConnecte () {
-			etat_connexion.setText("Etat connexion : connecté");
-			etat_connexion.setForeground(Color.green);
+			etat_connexion.setText("Connection status: connected");
+			etat_connexion.setForeground(new Color(201, 240, 211));
 		}
 		
 		public void estDeconnecte () {
-			etat_connexion.setText("Etat connexion : deconnecte");
-	        etat_connexion.setForeground(Color.red);
+			etat_connexion.setText("Connection status: disconnected");
+	        etat_connexion.setForeground(new Color(176, 0, 53));
 		}
 }
 
