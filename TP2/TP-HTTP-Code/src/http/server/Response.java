@@ -25,6 +25,18 @@ public class Response {
   }
 
   /**
+   * Helper setting the response header to an example status code (only for
+   * demonstration purposes)
+   *
+   * @param code The status code of the response
+   */
+  public void demoFile(int code) {
+    this.resPayload = new byte[0];
+    this.resHeader.setCode(code);
+    this.resHeader.setLength(0);
+  }
+
+  /**
    * Helper setting the response header to 404 and empty content
    */
   public void fileNotFound() {
@@ -39,9 +51,34 @@ public class Response {
    * dynamic or static
    */
   public void findFile() {
-    if (this.resHeader.getDynamic()) {
+    String fn = this.resHeader.getFileName();
+
+    // example files for status codes, for demonstration purposes
+    if (fn.equals("/400.html")) {
+      this.demoFile(400);
+    } else if (fn.equals("/401.html")) {
+      this.demoFile(401);
+    } else if (fn.equals("/402.html")) {
+      this.demoFile(402);
+    } else if (fn.equals("/403.html")) {
+      this.demoFile(403);
+    } else if (fn.equals("/405.html")) {
+      this.demoFile(405);
+    } else if (fn.equals("/406.html")) {
+      this.demoFile(406);
+    } else if (fn.equals("/407.html")) {
+      this.demoFile(407);
+    } else if (fn.equals("/408.html")) {
+      this.demoFile(408);
+    } else if (fn.equals("/409.html")) {
+      this.demoFile(409);
+    } else if (fn.equals("/451.html")) {
+      this.demoFile(451);
+    } else if (this.resHeader.getDynamic()) {
+      // not an example, is the file dynamic
       this.findDynamicFile();
     } else {
+      // else, the file is static
       this.findStaticFile();
     }
   }
