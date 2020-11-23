@@ -7,6 +7,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.Socket;
 import java.awt.Color;
 
 public class ChatWindow extends JFrame implements ActionListener {
@@ -18,7 +25,9 @@ public class ChatWindow extends JFrame implements ActionListener {
 	private JButton envoyer;
 	private JTextField ip;
 	private JTextField port;
-	EchoClient client;
+	Socket echoSocket = null;
+	PrintStream socOut = null;
+	BufferedReader socIn = null;
 
 	public ChatWindow () {
 		
@@ -40,7 +49,7 @@ public class ChatWindow extends JFrame implements ActionListener {
         grandeZone.setBackground(Color.white);
         grandeZone.setBounds(50, 100, WIDTH-100, HEIGHT-300);
         
-        //texte a renvoer chat
+        //texte a renvoyer chat
         JTextField response = new JTextField();
         response.setBackground(Color.white);
         response.setBounds(50, 700, WIDTH-100, 20);
@@ -85,14 +94,21 @@ public class ChatWindow extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent evt) {
 			Object o = evt.getSource();
 			if (o == connexion) {
-				System.out.println("Connexion");
-				client = new EchoClient (ip.getText(), port.getText());
+				System.out.println("Connexion IHM");
+				String port_nom = port.getText();
+				try {
+					echoSocket = new Socket(ip.getText(), Integer.valueOf(port_nom).intValue());
+					socIn = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
+				    socOut = new PrintStream(echoSocket.getOutputStream());
+				} catch (NumberFormatException | IOException e) {
+					e.printStackTrace();
+				}
 			}
 			if (o == deconnexion) {
-				System.out.println("Deconnexion");
+				System.out.println("Deconnexion IHM");
 			}
 			if (o == envoyer) {
-				System.out.println("Envoyer");
+				System.out.println("Envoyer IHM");
 			}
 		};
 }
