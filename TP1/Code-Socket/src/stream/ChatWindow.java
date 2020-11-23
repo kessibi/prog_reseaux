@@ -15,7 +15,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.awt.Color;
 
-public class ChatWindow extends JFrame implements ActionListener {
+public class ChatWindow extends JFrame implements KeyListener, ActionListener {
 	
 	int WIDTH = 600;
 	int HEIGHT = 800;
@@ -47,6 +47,7 @@ public class ChatWindow extends JFrame implements ActionListener {
         
         //zone de texte du chat
         grandeZone = new JTextArea();
+        grandeZone.setEditable(false);
         grandeZone.setBackground(Color.white);
         grandeZone.setBounds(50, 100, WIDTH-100, HEIGHT-300);
         
@@ -77,6 +78,9 @@ public class ChatWindow extends JFrame implements ActionListener {
         deconnexion = new JButton ("Se deconnecter");
         deconnexion.setBounds(450, 35, 100, 20);
         deconnexion.addActionListener(this);
+        
+        //listenertouches
+        addKeyListener(this);
         
         
         panelPrincipal.add(ip);
@@ -123,4 +127,26 @@ public class ChatWindow extends JFrame implements ActionListener {
 				response.setText("");
 			}
 		};
+		
+		public void keyTyped(KeyEvent e) {
+			if(e.getKeyCode()==KeyEvent.VK_ENTER)
+            {
+              System.out.println("touche entree typed");
+            }
+
+		}
+		
+		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode()==KeyEvent.VK_ENTER)
+            {
+              System.out.println("touche entree typed");
+            }
+
+		}
+		
+		public void keyReleased(KeyEvent e) {
+
+
+		}
 }
+
