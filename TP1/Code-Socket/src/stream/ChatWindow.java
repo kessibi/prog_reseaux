@@ -21,7 +21,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 public class ChatWindow extends JFrame implements KeyListener, ActionListener {
-	
+
 	int WIDTH = 700;
 	int HEIGHT = 900;
 	private JButton connexion;
@@ -38,13 +38,13 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
 	boolean statut = false;
 
 	public ChatWindow () {
-		
-        this.setTitle("Chat");          
+
+        this.setTitle("Chat");
         this.setSize(WIDTH, HEIGHT);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
-		
+
         //panel principal
         JPanel panelPrincipal = new JPanel();
         panelPrincipal.setBackground(new Color(94, 141, 168));
@@ -52,7 +52,7 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
         panelPrincipal.setLayout(null);
         panelPrincipal.setFocusable(true);
         panelPrincipal.requestFocusInWindow();
-        
+
         //zone de texte du chat
         grandeZone = new JTextArea();
         grandeZone.setBackground(new Color(237, 252, 237));
@@ -62,17 +62,17 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
         // JLabel label = new JLabel( new ImageIcon("../../images/background2.jpg") );
         // label.setLayout( new BorderLayout() );
         // label.add( grandeZone );
-        
+
         //texte a renvoyer chat
         response = new JTextField();
         response.setBackground(Color.white);
         response.setBounds(50, 700, WIDTH-100, 20);
-        
+
         //bouton envoyer
         envoyer = new JButton ("send");
         envoyer.setBounds(400, 750, 100, 20);
         envoyer.addActionListener(this);
-        
+
         //infos serveur
         ip = new JTextField();
         JLabel ip_name = new JLabel("ip");
@@ -82,15 +82,15 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
         ip_name.setBounds(50, 20, 100, 20);
         port.setBounds(100, 50, 100, 20);
         port_name.setBounds(50, 50, 100, 20);
-        
+
         //info connexion
         Font fonte = new Font(" TimesRoman ",Font.BOLD,15);
         etat_connexion = new JLabel ("Chargement de l'IHM...");
         estDeconnecte();
         etat_connexion.setFont(fonte);
         etat_connexion.setBounds(300, 50, 300, 50);
-       
-        //bouton connexion 
+
+        //bouton connexion
 
         connexion = new JButton ("enter the chat");
         connexion.setBounds(300, 35, 150, 20);
@@ -99,11 +99,11 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
         deconnexion.setBounds(500, 35, 150, 20);
         deconnexion.addActionListener(this);
         deconnexion.setEnabled(false);
-        
+
         //listenertouches
         response.addKeyListener(this);
-        
-        
+
+
         panelPrincipal.add(ip);
         panelPrincipal.add(ip_name);
         panelPrincipal.add(port);
@@ -114,13 +114,13 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
         panelPrincipal.add(response);
         panelPrincipal.add(envoyer);
         panelPrincipal.add(etat_connexion);
-        
+
         add(panelPrincipal);
-        
+
         panelPrincipal.updateUI();
-        
+
 	}
-	
+
 	public void actionPerformed(ActionEvent evt) {
 			Object o = evt.getSource();
 			if (o == connexion) {
@@ -132,19 +132,24 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
 					echoSocket = new Socket(ip_nom, Integer.valueOf(port_nom).intValue());
 					socIn = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
 				    socOut = new PrintStream(echoSocket.getOutputStream());
-				    estConnecte();
+				    ThreadEcritureIHM threadEcriture = new ThreadEcritureIHM(socIn, grandeZone);
+				    threadEcriture.start();
+			        deconnexion.setEnabled(true);
+			        connexion.setEnabled(false);
+			        estConnecte();
 				} catch (UnknownHostException e) {
 				      System.err.println("Don't know about host:" + ip_nom);
-				      System.exit(1);
+				      estErreur();
 			    } catch (IOException e) {
-			      System.err.println("Couldn't get I/O for "
-			          + "the connection to:" + ip_nom);
-			      System.exit(1);
+			      System.err.println("Couldn't get I/O for " + "the connection to:" + ip_nom);
+			      	estErreur();
+			    } catch (Exception e) {
+			    	estErreur();
 			    }
 
-				ThreadEcritureIHM threadEcriture = new ThreadEcritureIHM(socIn, grandeZone);
-			    threadEcriture.start();
-		        deconnexion.setEnabled(true);
+
+
+
 
 			}
 			if (o == deconnexion) {
@@ -168,7 +173,7 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
 				response.setText("");
 			}
 		};
-		
+
 		public void keyTyped(KeyEvent e) {
             System.out.println("touche typed");
 			if(e.getKeyCode()==KeyEvent.VK_ENTER)
@@ -177,24 +182,30 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
             }
 
 		}
-		
+
 		public void keyPressed(KeyEvent e) {
 
 
 		}
-		
+
 		public void keyReleased(KeyEvent e) {
 
 		}
-		
+
 		public void estConnecte () {
 			etat_connexion.setText("Connection status: connected");
 			etat_connexion.setForeground(new Color(201, 240, 211));
 		}
-		
+
 		public void estDeconnecte () {
+
 			etat_connexion.setText("Connection status: disconnected");
 	        etat_connexion.setForeground(new Color(176, 0, 53));
 		}
-}
 
+		public void estErreur () {
+			etat_connexion.setText("Connection status: error");
+	        etat_connexion.setForeground(Color.red);
+
+		}
+}
