@@ -90,7 +90,7 @@ public class ClientThread extends Thread {
   public void sendToClient(String line) {
     try {
       PrintStream socOut = new PrintStream(clientSocket.getOutputStream());
-      socOut.println(line);
+      socOut.println(line);   
     } catch (Exception e) {
       System.err.println("Error in EchoServer:" + e);
     }
