@@ -75,11 +75,11 @@ public class ClientThread extends Thread {
       String name = "";
 
       while (name.equals("")) {
-    	  if (name == "quit") {
-    		  server.closeThread(this);
-    	  }
-    	  sendToClient("Choose a name: ");
-    	  name = socIn.readLine();
+        if (name == "quit") {
+          server.closeThread(this);
+        }
+        sendToClient("Choose a name: ");
+        name = socIn.readLine();
       }
       this.name = name;
 
@@ -92,7 +92,7 @@ public class ClientThread extends Thread {
   public void sendToClient(String line) {
     try {
       PrintStream socOut = new PrintStream(clientSocket.getOutputStream());
-      socOut.println(line);   
+      socOut.println(line);
     } catch (Exception e) {
       System.err.println("Error in EchoServer:" + e);
     }
