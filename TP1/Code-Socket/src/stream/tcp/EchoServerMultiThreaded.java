@@ -46,7 +46,7 @@ public class EchoServerMultiThreaded {
     // create a new file to save the chat
     try {
       LocalDateTime time = LocalDateTime.now();
-      filename = "../chats/chat_" + String.valueOf(port) + ".txt";
+      filename = "/tmp/chat_" + String.valueOf(port) + ".txt";
       chat = new File(filename);
       if (chat.createNewFile()) {
         System.out.println("File created: " + chat.getName());
