@@ -59,6 +59,15 @@ public class EchoServerMultiThreaded {
     clientsOn.forEach((uuid, client) -> client.sendToClient(line));
   }
 
+  public void sendToAllExcept(String line, UUID id) {
+    history.addMessage(line);
+    clientsOn.forEach((uuid, client) -> {
+      if (uuid != id) {
+        client.sendToClient(line);
+      }
+    });
+  }
+
   public void closeThread(ClientThread client) {
     String name = client.getUserName();
 

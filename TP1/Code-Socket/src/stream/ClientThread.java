@@ -59,10 +59,9 @@ public class ClientThread extends Thread {
             server.sendToAll(this.name + ": " + message);
         }
       }
-      
+
       // the client has left without warning the server
       server.closeThread(this);
-          
 
     } catch (Exception e) {
       System.err.println("Error in ClientThread:" + e);
@@ -80,8 +79,8 @@ public class ClientThread extends Thread {
         name = socIn.readLine();
       }
       this.name = name;
-    
-      server.sendToAll(name + " has joined the chatroom.");
+
+      server.sendToAllExcept(name + " has joined the chatroom.", uuid);
     } catch (Exception e) {
       System.err.println("Error in EchoServer:" + e);
     }
