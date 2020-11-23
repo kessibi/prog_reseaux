@@ -1,5 +1,6 @@
 package stream;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,12 +14,13 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.awt.BorderLayout;
 import java.awt.Color;
 
 public class ChatWindow extends JFrame implements ActionListener {
 	
-	int WIDTH = 600;
-	int HEIGHT = 800;
+	int WIDTH = 700;
+	int HEIGHT = 900;
 	private JButton connexion;
 	private JButton deconnexion;
 	private JButton envoyer;
@@ -40,15 +42,19 @@ public class ChatWindow extends JFrame implements ActionListener {
 		
         //panel principal
         JPanel panelPrincipal = new JPanel();
-        panelPrincipal.setBackground(Color.gray);
+        panelPrincipal.setBackground(new Color(94, 141, 168));
         panelPrincipal.setBounds(0, 0, WIDTH, HEIGHT);
         panelPrincipal.setLayout(null);
         add(panelPrincipal);
         
         //zone de texte du chat
         grandeZone = new JTextArea();
-        grandeZone.setBackground(Color.white);
+        grandeZone.setBackground(new Color(237, 252, 237));
         grandeZone.setBounds(50, 100, WIDTH-100, HEIGHT-300);
+        // grandeZone.setOpaque( false );
+        // JLabel label = new JLabel( new ImageIcon("../../images/background2.jpg") );
+        // label.setLayout( new BorderLayout() );
+        // label.add( grandeZone );
         
         //texte a renvoyer chat
         response = new JTextField();
@@ -56,7 +62,7 @@ public class ChatWindow extends JFrame implements ActionListener {
         response.setBounds(50, 700, WIDTH-100, 20);
         
         //bouton envoyer
-        envoyer = new JButton ("Envoyer");
+        envoyer = new JButton ("send");
         envoyer.setBounds(400, 750, 100, 20);
         envoyer.addActionListener(this);
         
@@ -71,11 +77,11 @@ public class ChatWindow extends JFrame implements ActionListener {
         port_name.setBounds(50, 50, 100, 20);
         
         //bouton connexion 
-        connexion = new JButton ("Se connecter");
-        connexion.setBounds(300, 35, 100, 20);
+        connexion = new JButton ("enter");
+        connexion.setBounds(400, 35, 100, 20);
         connexion.addActionListener(this);
-        deconnexion = new JButton ("Se deconnecter");
-        deconnexion.setBounds(450, 35, 100, 20);
+        deconnexion = new JButton ("leave");
+        deconnexion.setBounds(550, 35, 100, 20);
         deconnexion.addActionListener(this);
         
         
