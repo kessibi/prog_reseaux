@@ -14,12 +14,16 @@ public class ThreadEcriture extends Thread {
     this.socOut = socOut;
   }
   public void run() {
-    while (true) {
-      try {
-        String line = socIn.readLine();
-        System.out.println(line);
-      } catch (IOException e) {
+    String message;
+    try {
+      while ((message = socIn.readLine()) != null) {
+        System.out.println(message);
       }
+      System.err.println("connection is out");
+      System.exit(1);
+    } catch (IOException e) {
+      System.err.println("connection is out");
+      System.exit(1);
     }
   }
 }
