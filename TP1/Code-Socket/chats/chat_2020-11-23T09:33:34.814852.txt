@@ -1,3 +1,0 @@
-ll: l
-ll: l
-ll has left the chatroom.
