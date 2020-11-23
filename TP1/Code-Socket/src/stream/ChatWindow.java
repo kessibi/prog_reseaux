@@ -132,19 +132,24 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
 					echoSocket = new Socket(ip_nom, Integer.valueOf(port_nom).intValue());
 					socIn = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
 				    socOut = new PrintStream(echoSocket.getOutputStream());
-				    estConnecte();
+				    ThreadEcritureIHM threadEcriture = new ThreadEcritureIHM(socIn, grandeZone);
+				    threadEcriture.start();
+			        deconnexion.setEnabled(true);
+			        connexion.setEnabled(false);
+			        estConnecte();
 				} catch (UnknownHostException e) {
 				      System.err.println("Don't know about host:" + ip_nom);
-				      System.exit(1);
+				      estErreur();
 			    } catch (IOException e) {
-			      System.err.println("Couldn't get I/O for "
-			          + "the connection to:" + ip_nom);
-			      System.exit(1);
+			      System.err.println("Couldn't get I/O for " + "the connection to:" + ip_nom);
+			      	estErreur();
+			    } catch (Exception e) {
+			    	estErreur();
 			    }
-
-				ThreadEcritureIHM threadEcriture = new ThreadEcritureIHM(socIn, grandeZone);
-			    threadEcriture.start();
-		        deconnexion.setEnabled(true);
+				
+			
+				
+				
 
 			}
 			if (o == deconnexion) {
@@ -194,6 +199,11 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
 		
 		public void estDeconnecte () {
 			etat_connexion.setText("Etat connexion : deconnecte");
+	        etat_connexion.setForeground(Color.black);
+		}
+		
+		public void estErreur () {
+			etat_connexion.setText("Etat connexion : erreur ");
 	        etat_connexion.setForeground(Color.red);
 		}
 }
