@@ -15,6 +15,10 @@ public class ChatWindow extends JFrame implements ActionListener {
 	int HEIGHT = 800;
 	private JButton connexion;
 	private JButton deconnexion;
+	private JButton envoyer;
+	private JTextField ip;
+	private JTextField port;
+	EchoClient client;
 
 	public ChatWindow () {
 		
@@ -36,10 +40,20 @@ public class ChatWindow extends JFrame implements ActionListener {
         grandeZone.setBackground(Color.white);
         grandeZone.setBounds(50, 100, WIDTH-100, HEIGHT-300);
         
+        //texte a renvoer chat
+        JTextField response = new JTextField();
+        response.setBackground(Color.white);
+        response.setBounds(50, 700, WIDTH-100, 20);
+        
+        //bouton envoyer
+        envoyer = new JButton ("Envoyer");
+        envoyer.setBounds(400, 750, 100, 20);
+        envoyer.addActionListener(this);
+        
         //infos serveur
-        JTextField ip = new JTextField();
+        ip = new JTextField();
         JLabel ip_name = new JLabel("ip");
-        JTextField port = new JTextField(5);
+        port = new JTextField(5);
         JLabel port_name = new JLabel("port");
         ip.setBounds(100, 20, 100, 20);
         ip_name.setBounds(50, 20, 100, 20);
@@ -62,6 +76,8 @@ public class ChatWindow extends JFrame implements ActionListener {
         panelPrincipal.add(connexion);
         panelPrincipal.add(deconnexion);
         panelPrincipal.add(grandeZone);
+        panelPrincipal.add(response);
+        panelPrincipal.add(envoyer);
         panelPrincipal.updateUI();
         
 	}
@@ -70,9 +86,13 @@ public class ChatWindow extends JFrame implements ActionListener {
 			Object o = evt.getSource();
 			if (o == connexion) {
 				System.out.println("Connexion");
+				client = new EchoClient (ip.getText(), port.getText());
 			}
 			if (o == deconnexion) {
 				System.out.println("Deconnexion");
+			}
+			if (o == envoyer) {
+				System.out.println("Envoyer");
 			}
 		};
 }
