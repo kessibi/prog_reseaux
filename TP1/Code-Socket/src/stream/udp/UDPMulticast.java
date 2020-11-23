@@ -1,7 +1,6 @@
+package stream.udp;
 
 // utiliser 224.0.0.1
-
-package stream;
 
 import java.io.*;
 import java.net.*;

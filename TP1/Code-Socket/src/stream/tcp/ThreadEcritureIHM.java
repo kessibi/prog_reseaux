@@ -1,9 +1,8 @@
-package stream;
+package stream.tcp;
 
 import java.io.*;
 import java.net.*;
 import javax.swing.JTextArea;
-
 
 public class ThreadEcritureIHM extends Thread {
   BufferedReader socIn;
@@ -13,12 +12,12 @@ public class ThreadEcritureIHM extends Thread {
     this.socIn = socIn;
     this.grandeZone = grandeZone;
   }
-  
+
   public void run() {
     String message;
     try {
       while ((message = socIn.readLine()) != null) {
-        grandeZone.append(message+"\n");
+        grandeZone.append(message + "\n");
       }
       System.err.println("connection is out");
       System.exit(1);

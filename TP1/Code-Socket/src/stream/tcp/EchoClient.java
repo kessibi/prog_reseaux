@@ -4,7 +4,7 @@
  * Date: 10/01/04
  * Authors:
  */
-package stream;
+package stream.tcp;
 
 import java.io.*;
 import java.net.*;
@@ -29,7 +29,7 @@ public class EchoClient {
       echoSocket = new Socket(arg0, Integer.valueOf(arg1).intValue());
       socIn = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
       socOut = new PrintStream(echoSocket.getOutputStream());
-      stdIn = new BufferedReader(new InputStreamReader(System.in));;
+      stdIn = new BufferedReader(new InputStreamReader(System.in));
 
     } catch (UnknownHostException e) {
       System.err.println("Don't know about host:" + arg0);
