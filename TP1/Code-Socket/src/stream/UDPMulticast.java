@@ -22,23 +22,34 @@ public class UDPMulticast {
       // Create a multicast socket
       InetAddress groupAddr = InetAddress.getByName(addr);
       MulticastSocket s = new MulticastSocket(groupPort);
+
       // Join the group
       s.joinGroup(groupAddr);
-      // Build a datagram packet for a message
-      // to send to the group
 
       Thread writer = new Thread() {
         public void run() {
-          String message;
           BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+
           try {
-            while ((message = stdIn.readLine()) != null) {
-              DatagramPacket msg =
-                  new DatagramPacket(message.getBytes(), message.length(), groupAddr, groupPort);
-              // Send a multicast message to the group
-              s.send(msg);
+            String name = "";
+            String message;
+            UUID uuid = UUID.randomUUID();
+
+            while (name.equals("")) {
+              System.out.println("Choose a name: ");
+              name = stdIn.readLine();
             }
-          } catch (IOException e) {
+
+            while ((message = stdIn.readLine()) != null) {
+              Message mm = new Message(uuid, name, message);
+              byte[] msg = mm.convertToBytes();
+              DatagramPacket data = new DatagramPacket(msg, msg.length, groupAddr, groupPort);
+              // Send a multicast message to the group
+              s.send(data);
+            }
+          } catch (IOException ioe) {
+            ioe.printStackTrace();
+            System.exit(1);
           }
         }
       };
@@ -52,8 +63,11 @@ public class UDPMulticast {
 
       while (true) {
         s.receive(recv);
-        String received = new String(recv.getData(), 0, recv.getLength());
-        System.out.println("Response :" + received);
+        try {
+          Message m = Message.convertFromBytes(recv.getData());
+          System.out.println(m.toString());
+        } catch (ClassNotFoundException cnfe) {
+        }
       }
 
       // OK, I'm done talking - leave the group
@@ -68,18 +82,6 @@ public class UDPMulticast {
       System.err.println("Couldn't get I/O for "
           + "the connection to:" + groupPort);
       System.exit(1);
-    }
-  }
-
-  public class MultiMessage {
-    private UUID uuid;
-    private String name;
-    private String message;
-
-    public MultiMessage(UUID id, String nam, String mess) {
-      this.uuid = id;
-      this.name = nam;
-      this.message = mess;
     }
   }
 }
