@@ -3,6 +3,7 @@ package http.server;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
  */
 public class WebServer {
   private int port;
+  private String rootDir;
 
   /**
    * WebServer constructor.
@@ -28,8 +30,9 @@ public class WebServer {
    * @param port The port the server will be listening from and accepting
    * requests
    */
-  public WebServer(int port) {
+  public WebServer(int port, String rootDir) {
     this.port = port;
+    this.rootDir = rootDir;
   }
 
   protected void start() {
@@ -48,7 +51,7 @@ public class WebServer {
     ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(20);
     Semaphore copyPerformed = new Semaphore(1);
 
-    System.out.println("Waiting for connection");
+    System.out.println("Waiting for connections");
     for (;;) {
       try {
         // wait for a connection
@@ -73,7 +76,7 @@ public class WebServer {
             Header h = HeaderParser.parseHeader(in);
 
             // get the response
-            Response res = new Response(h);
+            Response res = new Response(this.rootDir, h);
             res.findFile();
 
             // Send the response
@@ -102,12 +105,17 @@ public class WebServer {
    * @param args Will fetch the port from the command-line
    */
   public static void main(String args[]) {
-    if (args.length != 1) {
-      System.err.println("usage: java Webserver <port>");
+    if (args.length != 2) {
+      System.err.println("usage: java Webserver <port> <dir>");
       System.exit(1);
     }
 
-    WebServer ws = new WebServer(Integer.parseInt(args[0]));
-    ws.start();
+    File rootDir = new File(args[1]);
+    if (rootDir.isDirectory()) {
+      WebServer ws = new WebServer(Integer.parseInt(args[0]), args[1]);
+      ws.start();
+    } else
+      System.err.println("The server needs a root directory to be started, eg: www");
+    System.exit(1);
   }
 }

@@ -15,11 +15,12 @@ import java.util.stream.Collectors;
  * HTTP response, built from the Header and sent back to the client
  */
 public class Response {
-  private static final String rootDir = "../www";
+  private final String rootDir;
   private Header resHeader;
   private byte[] resPayload;
 
-  public Response(Header h) {
+  public Response(String dir, Header h) {
+    this.rootDir = dir;
     this.resHeader = h;
   }
 

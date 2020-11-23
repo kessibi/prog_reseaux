@@ -9,7 +9,8 @@ import java.util.regex.Pattern;
  * HTTP header parser
  */
 public class HeaderParser {
-  private static final String[] supportedMethods = {"GET", "POST", "PUT", "DELETE", "HEAD"};
+  private static final String[] supportedMethods = {
+      "GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"};
 
   /**
    * Reads the header from the buffer, line after line

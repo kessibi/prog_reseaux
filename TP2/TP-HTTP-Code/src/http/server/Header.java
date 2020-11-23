@@ -4,7 +4,7 @@ package http.server;
  * HTTP header with relevant data: protocol, server, content, length, ...
  */
 public class Header {
-  private final String protocol = "HTTP/1.0 ";
+  private final String protocol = "HTTP/1.1 ";
   private final String server = "Server: Skitzbot/0.1";
   private final String content = "Content-Type: ";
   private final String length = "Content-Length: ";
