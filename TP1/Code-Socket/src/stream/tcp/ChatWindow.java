@@ -1,4 +1,4 @@
-package stream;
+package stream.tcp;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

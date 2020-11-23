@@ -1,4 +1,4 @@
-package stream;
+package stream.udp;
 
 import java.io.*;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package stream;
+package stream.tcp;
 
 import java.io.*;
 import java.net.*;
