@@ -9,9 +9,7 @@ package stream.tcp;
 
 import java.io.*;
 import java.net.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -24,9 +22,6 @@ public class EchoServerMultiThreaded {
   private HashMap<UUID, ClientThread> clientsOn;
   ServerSocket listenSocket;
   private History history;
-  public File chat;
-  private String filename;
-  private LocalDate date;
 
   public static void main(String args[]) {
     if (args.length != 1) {
@@ -39,44 +34,9 @@ public class EchoServerMultiThreaded {
   }
 
   public EchoServerMultiThreaded(int port) {
-    history = new History();
+    String filename = "/tmp/chat_" + String.valueOf(port) + ".txt";
+    history = new History(filename);
     clientsOn = new HashMap<UUID, ClientThread>();
-    date = LocalDate.now();
-
-    // create a new file to save the chat
-    try {
-      LocalDateTime time = LocalDateTime.now();
-      filename = "/tmp/chat_" + String.valueOf(port) + ".txt";
-      chat = new File(filename);
-      if (chat.createNewFile()) {
-        System.out.println("File created: " + chat.getName());
-        try {
-          FileWriter chatWriter = new FileWriter(filename, true);
-          chatWriter.append(time.getDayOfWeek() + " " + time.getMonth().toString() + " "
-              + String.valueOf(time.getDayOfMonth()));
-          chatWriter.append(System.getProperty("line.separator"));
-          chatWriter.close();
-        } catch (IOException e) {
-          System.out.println("An error occurred while writing.");
-          e.printStackTrace();
-        }
-      } else {
-        System.out.println("Load chat history.");
-        try {
-          FileWriter chatWriter = new FileWriter(filename, true);
-          chatWriter.append(time.getDayOfWeek() + " " + time.getMonth().toString() + " "
-              + String.valueOf(time.getDayOfMonth()));
-          chatWriter.append(System.getProperty("line.separator"));
-          chatWriter.close();
-        } catch (IOException e) {
-          System.out.println("An error occurred while writing.");
-          e.printStackTrace();
-        }
-      }
-    } catch (IOException e) {
-      System.out.println("An error occurred.");
-      e.printStackTrace();
-    }
 
     try {
       listenSocket = new ServerSocket(port);
@@ -96,49 +56,25 @@ public class EchoServerMultiThreaded {
     }
   }
 
-  private void checkAndWriteDate() {
-    LocalDate newDate = LocalDate.now();
-    if (date.isBefore(newDate)) {
-      date = newDate;
-      try {
-        FileWriter chatWriter = new FileWriter(filename, true);
-        chatWriter.append(newDate.getDayOfWeek() + " " + newDate.getMonth().toString() + " "
-            + String.valueOf(newDate.getDayOfMonth()));
-        chatWriter.append(System.getProperty("line.separator"));
-        chatWriter.close();
-      } catch (IOException e) {
-        System.out.println("An error occurred while writing.");
-        e.printStackTrace();
-      }
-    }
+  public String whatTimeItIs() {
+    LocalDateTime time = LocalDateTime.now();
+    String ret = time.toString().substring(0, 19);
+    ret = ret.replace("T", " ");
+
+    return ret;
   }
 
   public void sendToAll(String line) {
-    LocalTime time = LocalTime.now();
-    String message = "<" + time.toString() + "> " + line;
+    String message = "<" + whatTimeItIs() + "> " + line;
     history.addMessage(message);
-    writeToFile(time, message);
+
     clientsOn.forEach((uuid, client) -> client.sendToClient(message));
   }
 
-  public void writeToFile(LocalTime time, String message) {
-    checkAndWriteDate();
-    try {
-      FileWriter chatWriter = new FileWriter(filename, true);
-      chatWriter.append(time.getHour() + ":" + time.getMinute() + " - " + message);
-      chatWriter.append(System.getProperty("line.separator"));
-      chatWriter.close();
-    } catch (IOException e) {
-      System.out.println("An error occurred while writing.");
-      e.printStackTrace();
-    }
-  }
-
   public void sendToAllExcept(String line, UUID id) {
-    LocalTime time = LocalTime.now();
-    String message = "<" + time.toString() + "> " + line;
+    String message = "<" + whatTimeItIs() + "> " + line;
     history.addMessage(message);
-    writeToFile(time, message);
+
     clientsOn.forEach((uuid, client) -> {
       if (uuid != id) {
         client.sendToClient(line);
