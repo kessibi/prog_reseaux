@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
@@ -30,6 +31,7 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
   private JTextField response;
   private JTextArea grandeZone;
   private JLabel etat_connexion;
+  private JScrollPane scrollPane;
   Socket echoSocket = null;
   PrintStream socOut = null;
   BufferedReader socIn = null;
@@ -59,11 +61,13 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
     grandeZone = new JTextArea();
     grandeZone.setBackground(new Color(237, 252, 237));
     grandeZone.setEditable(false);
-    grandeZone.setBounds(50, 100, WIDTH - 100, HEIGHT - 300);
     // grandeZone.setOpaque( false );
     // JLabel label = new JLabel( new ImageIcon("../../images/background2.jpg") );
     // label.setLayout( new BorderLayout() );
     // label.add( grandeZone );
+    scrollPane = new JScrollPane();
+    scrollPane.setBounds(50, 100, WIDTH - 100, HEIGHT - 300);
+   
 
     // texte a renvoyer chat
     response = new JTextField();
@@ -111,14 +115,17 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
     panelPrincipal.add(port_name);
     panelPrincipal.add(connexion);
     panelPrincipal.add(deconnexion);
-    panelPrincipal.add(grandeZone);
     panelPrincipal.add(response);
     panelPrincipal.add(envoyer);
     panelPrincipal.add(etat_connexion);
+    
+    scrollPane.add(grandeZone);
+    panelPrincipal.add(scrollPane);
 
     add(panelPrincipal);
 
     panelPrincipal.updateUI();
+    scrollPane.updateUI();
   }
 
   public void actionPerformed(ActionEvent evt) {
@@ -132,7 +139,7 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
         echoSocket = new Socket(ip_nom, Integer.valueOf(port_nom).intValue());
         socIn = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
         socOut = new PrintStream(echoSocket.getOutputStream());
-        ThreadEcritureIHM threadEcriture = new ThreadEcritureIHM(socIn, grandeZone);
+        ThreadEcritureIHM threadEcriture = new ThreadEcritureIHM(socIn, grandeZone, scrollPane);
         threadEcriture.start();
         deconnexion.setEnabled(true);
         connexion.setEnabled(false);
