@@ -1,5 +1,7 @@
 package http.server;
 
+import java.util.Date;
+
 /**
  * HTTP header with relevant data: protocol, server, content, length, ...
  */
@@ -54,10 +56,12 @@ public class Header {
    * @return the header in HTTP/1.0 format
    */
   public String getHeaders() {
-    String res = protocol + codeToStatus() + "\n";
+    String res = "";
+    res += protocol + codeToStatus() + "\n";
     res += server + "\n";
+    res += "Date: " + new Date() + "\n";
     res += content + this.mimeType + "\n";
-    res += length + contentLength + "\n\n";
+    res += length + contentLength;
     return res;
   }
 

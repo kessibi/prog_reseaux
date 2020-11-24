@@ -1,13 +1,14 @@
 /// A Simple Web Server (WebServer.java)
 package http.server;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.Executors;
@@ -67,7 +68,8 @@ public class WebServer {
 
           try {
             OutputStream os = remote.getOutputStream();
-            DataOutputStream dos = new DataOutputStream(os);
+            PrintWriter pw = new PrintWriter(os);
+            BufferedOutputStream bos = new BufferedOutputStream(os);
             InputStream is = remote.getInputStream();
 
             BufferedReader in = new BufferedReader(new InputStreamReader(is));
@@ -81,12 +83,15 @@ public class WebServer {
 
             // Send the response
             // Send the headers
-            dos.writeUTF(res.getResponseHeaders());
+            pw.println(res.getResponseHeaders());
+            pw.println(); // blank line between headers and content, very important !
+            pw.flush();
 
             // Send the response
             byte[] sentBytes = res.getPayload();
-            dos.write(sentBytes, 0, sentBytes.length);
-            dos.flush();
+
+            bos.write(sentBytes, 0, sentBytes.length);
+            bos.flush();
 
             remote.close();
           } catch (IOException ioe) {
