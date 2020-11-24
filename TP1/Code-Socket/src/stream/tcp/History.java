@@ -9,12 +9,22 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The class History represents the history of a chat conversation.
+ *
+ */
 public class History {
   private List<String> messages;
   private String filename;
   private LocalDate date;
   public File chat;
 
+  /**
+   * Constructor method which first either creates a new file given by its filename or, if it already exits,
+   * opens the existing file. In the case that the file already exists, the saved messages are read from the file
+   * and added to the history.
+   * @param fn The filename of the history file.
+   */
   public History(String fn) {
     this.messages = new ArrayList<String>();
     this.filename = fn;
@@ -44,6 +54,9 @@ public class History {
     }
   }
 
+  /**
+   * This method is used to check if a day has passed. If so, the new date is written in the history.
+   */
   private void checkAndWriteDate() {
     LocalDate newDate = LocalDate.now();
     if (date.isBefore(newDate)) {
@@ -61,6 +74,10 @@ public class History {
     }
   }
 
+  /**
+   * The method <code>writeToFile</code> takes a message passed as a parameter and adds it to the file.
+   * @param message The message to be saved.
+   */
   public void writeToFile(String message) {
     try {
       FileWriter chatWriter = new FileWriter(filename, true);
@@ -73,15 +90,27 @@ public class History {
     }
   }
 
+  /**
+   * This method takes a message passed as a parameter and adds it to its List of messages. The message 
+   * is then written to the file as well.
+   * @param message The message to be saved.
+   */
   public void addMessage(String message) {
     messages.add(message);
     writeToFile(message);
   }
 
+  /**
+   * This method is used to retrieve all messages saved before. 
+   * @return messages List of all saved messages.
+   */
   public List<String> getMessages() {
     return messages;
   }
 
+  /**
+   * Method to print every message on the console.
+   */
   public void printAllMessages() {
     System.out.println("Print all messages here");
     for (String message : messages) {
@@ -89,6 +118,10 @@ public class History {
     }
   }
 
+  /**
+   * This method is used to convert all messages in a beautiful string. 
+   * @return output All messages represented as a <code>String</code>.
+   */
   @Override
   public String toString() {
     String output = "======= History =======";

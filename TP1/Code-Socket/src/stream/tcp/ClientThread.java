@@ -11,6 +11,10 @@ import java.io.*;
 import java.net.*;
 import java.util.UUID;
 
+/**
+ * This class extends the Java.lang.Thread class. It represents a client thread.
+ * 
+ */
 public class ClientThread extends Thread {
   private Socket clientSocket;
   private EchoServerMultiThreaded server;
@@ -18,6 +22,13 @@ public class ClientThread extends Thread {
   private History history;
   private UUID uuid;
 
+  /**
+   * Constructor method which assigns the attributes of the class.
+   * @param s A socket.
+   * @param id The unique user id of the client.
+   * @param server The server the client is connected to.
+   * @param history The history of the chat conversation.
+   */
   ClientThread(Socket s, UUID id, EchoServerMultiThreaded server, History history) {
     this.clientSocket = s;
     this.uuid = id;
@@ -25,17 +36,25 @@ public class ClientThread extends Thread {
     this.history = history;
   }
 
+  /**
+   * This method is used to retrieve the uuid of the client thread.
+   * @return uuid The unique user id of the thread.
+   */
   public UUID getUUID() {
     return this.uuid;
   }
 
+  /**
+   * The method returns the user name of the client.
+   * @return name The client's user name.
+   */
   public String getUserName() {
     return name;
   }
 
   /**
-   * receives a request from client then sends an echo to the client
-   * @param clientSocket the client socket
+   * Receives a request from client then sends an echo to the client.
+   * @param clientSocket The client socket.
    **/
   public void run() {
     try {
@@ -80,6 +99,10 @@ public class ClientThread extends Thread {
     }
   }
 
+  /**
+   * Method used to set a user name after joining a conversation. All clients are notified that
+   * someone new joined the chat room.
+   */
   public void setUserName() {
     try {
       InputStream is = clientSocket.getInputStream();
@@ -101,6 +124,10 @@ public class ClientThread extends Thread {
     }
   }
 
+  /**
+   * Method used to send a message (or information) to the server.
+   * @param line The message to be sent.
+   */
   public void sendToClient(String line) {
     try {
       PrintStream socOut = new PrintStream(clientSocket.getOutputStream());
