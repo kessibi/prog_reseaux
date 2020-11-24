@@ -15,9 +15,9 @@ public class ThreadLecture extends Thread {
 
   /**
    * Constructor method which assigns the input and output sockets.
-   * @param BufferedReader socIn An input socket.
-   * @param BufferedReader stdIn Another input socket for standard input.
-   * @param PrintStream socOut The output socket.
+   * @param socIn An input socket.
+   * @param stdIn Another input socket for standard input.
+   * @param socOut The output socket.
    * @param client The client.
    */
   public ThreadLecture(

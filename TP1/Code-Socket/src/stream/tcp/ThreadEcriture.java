@@ -14,9 +14,9 @@ public class ThreadEcriture extends Thread {
 
   /**
    * Constructor method which assigns the input and output sockets.
-   * @param BufferedReader socIn input socket
-   * @param BufferedReader stdIn another input socket for standard input.
-   * @param PrintStream socOut output socket
+   * @param socIn An input socket.
+   * @param stdIn Another input socket for standard input.
+   * @param socOut The output socket.
    */
   public ThreadEcriture(BufferedReader socIn, BufferedReader stdIn, PrintStream socOut) {
     this.socIn = socIn;

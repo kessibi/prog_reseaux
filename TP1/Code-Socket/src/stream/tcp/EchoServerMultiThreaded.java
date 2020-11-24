@@ -26,7 +26,7 @@ public class EchoServerMultiThreaded {
 
   /**
    * The main method initiates the server.
-   * @param EchoServer port
+   * @param port The port.
    *
    **/
   public static void main(String args[]) {
@@ -69,7 +69,7 @@ public class EchoServerMultiThreaded {
 
   /**
    * This method finds out the date and time.
-   * @return String current date and time represented as a <code>String</code>
+   * @return ret Current date and time represented as a <code>String</code>.
    */
   public String whatTimeItIs() {
     LocalDateTime time = LocalDateTime.now();
@@ -82,7 +82,7 @@ public class EchoServerMultiThreaded {
   /**
    * The method takes a message (or information in general) passed as a <code>String</code>, 
    * saves it the chat history and sends it to all connected clients.
-   * @param String A message or information 
+   * @param String A message or information.
    */
   public void sendToAll(String line) {
     String message = "<" + whatTimeItIs() + "> " + line;
@@ -94,9 +94,9 @@ public class EchoServerMultiThreaded {
   /**
    * The method takes a message (or information in general) passed as a <code>String</code>, 
    * and sends it to a specific client if connected.
-   * @param String <code>from</code> user name of sender 
-   * @param String <code>to</code> user name of recipient
-   * @param String line the message to be transfered
+   * @param from user name of sender 
+   * @param to user name of recipient
+   * @param line the message to be transfered
    */
   public void sendPrivateMsg(String from, String to, String line) {
     boolean isOn = false;
@@ -124,7 +124,7 @@ public class EchoServerMultiThreaded {
 
   /**
    * Method to send a list of connected clients to a specific client
-   * @param UUID to unique user id of a client thread
+   * @param to unique user id of a client thread
    */
   public void sendList(UUID to) {
     String connectedUsers = "Connected users: ";
@@ -142,8 +142,8 @@ public class EchoServerMultiThreaded {
   /**
    * The method takes a message (or information in general) passed as a <code>String</code>, 
    * saves it the chat history and sends it to all connected clients except a specific client given by his uuid.
-   * @param String line A message or information 
-   * @param UUID id unique user id of a client thread
+   * @param line A message or information 
+   * @param id The unique user id of a client thread
    */
   public void sendToAllExcept(String line, UUID id) {
     String message = "<" + whatTimeItIs() + "> " + line;
@@ -158,7 +158,7 @@ public class EchoServerMultiThreaded {
 
   /**
    * Method to close a given client thread.
-   * @param ClientThread client the client to be stopped.
+   * @param client The client to be stopped.
    */
   public void closeThread(ClientThread client) {
     String name = client.getUserName();
