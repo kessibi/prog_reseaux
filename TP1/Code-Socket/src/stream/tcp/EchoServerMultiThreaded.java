@@ -114,34 +114,31 @@ public class EchoServerMultiThreaded {
   }
 
   public void sendToAll(String line) {
-    history.addMessage(line);
+    LocalTime time = LocalTime.now();
+    String message = "<" + time.toString() + "> " + line;
+    history.addMessage(message);
+    writeToFile(time, message);
+    clientsOn.forEach((uuid, client) -> client.sendToClient(message));
+  }
+
+  public void writeToFile(LocalTime time, String message) {
     checkAndWriteDate();
     try {
       FileWriter chatWriter = new FileWriter(filename, true);
-      LocalTime time = LocalTime.now();
-      chatWriter.append(time.getHour() + ":" + time.getMinute() + " - " + line);
+      chatWriter.append(time.getHour() + ":" + time.getMinute() + " - " + message);
       chatWriter.append(System.getProperty("line.separator"));
       chatWriter.close();
     } catch (IOException e) {
       System.out.println("An error occurred while writing.");
       e.printStackTrace();
     }
-    clientsOn.forEach((uuid, client) -> client.sendToClient(line));
   }
 
   public void sendToAllExcept(String line, UUID id) {
-    history.addMessage(line);
-    checkAndWriteDate();
-    try {
-      FileWriter chatWriter = new FileWriter(filename, true);
-      LocalTime time = LocalTime.now();
-      chatWriter.append(time.getHour() + ":" + time.getMinute() + " - " + line);
-      chatWriter.append(System.getProperty("line.separator"));
-      chatWriter.close();
-    } catch (IOException e) {
-      System.out.println("An error occurred while writing.");
-      e.printStackTrace();
-    }
+    LocalTime time = LocalTime.now();
+    String message = "<" + time.toString() + "> " + line;
+    history.addMessage(message);
+    writeToFile(time, message);
     clientsOn.forEach((uuid, client) -> {
       if (uuid != id) {
         client.sendToClient(line);
