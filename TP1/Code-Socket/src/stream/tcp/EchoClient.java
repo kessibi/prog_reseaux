@@ -9,6 +9,10 @@ package stream.tcp;
 import java.io.*;
 import java.net.*;
 
+/**
+ * The class which represents a client who wants to connect to a server to take part in a chat conversation.
+ *
+ */
 public class EchoClient {
   Socket echoSocket = null;
   PrintStream socOut = null;
@@ -23,6 +27,12 @@ public class EchoClient {
     EchoClient client = new EchoClient(args[0], args[1]);
   }
 
+  /**
+   * Constructor class which initializes the sockets. 
+   * Moreover the reading and writing threads are initialized and started.
+   * @param arg0 The id of the server. 
+   * @param arg1 The port of the server.
+   */
   public EchoClient(String arg0, String arg1) {
     try {
       // creation socket ==> connexion
@@ -47,6 +57,9 @@ public class EchoClient {
     threadEcriture.start();
   }
 
+  /**
+   * This method closes the connection to the server.
+   */
   public void closeConnection() {
     try {
       socOut.close();
