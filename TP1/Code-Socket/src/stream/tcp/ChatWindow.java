@@ -170,17 +170,20 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
       }
     }
     if (o == envoyer) {
-      System.out.println("Envoyer IHM");
+    	envoyerMessage();
+    }
+  };
+  
+  public void envoyerMessage () {
+	  System.out.println("Envoyer IHM");
       String text_to_send = response.getText();
       socOut.println(text_to_send);
       response.setText("");
-    }
-  };
+  }
 
   public void keyTyped(KeyEvent e) {
-    System.out.println("touche typed");
-    if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-      System.out.println("touche entree typed");
+    if (e.getKeyChar() == '\n') {
+    	envoyerMessage();
     }
   }
 
