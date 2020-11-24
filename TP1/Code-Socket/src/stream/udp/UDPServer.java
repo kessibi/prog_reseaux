@@ -5,13 +5,36 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * <p>This class represent an UDP Server</p>
+ * <p> His activities are :</p>
+ * <ul>
+ * <li>Receive a packet</li>
+ * <li>Send this packet to the sender</li>
+ * </ul>
+ * @version 1.2
+ *
+ */
+
 public class UDPServer {
+	
   public static void main(String args[]) {
     int argInt = Integer.parseInt(args[0]);
     int argLength = args.length;
     UDPServer serveur = new UDPServer(argInt, argLength);
   }
 
+  /**
+   * 
+   * This is the constructor of UDPServer
+   * 
+   * @param port
+   * 		The server port
+   * @param argLength
+   * 		The number of args given in the command line
+   * 
+   */
   public UDPServer(int port, int argLength) {
     int threadId = 0;
     if (argLength != 1) {

@@ -3,6 +3,17 @@ package stream.udp;
 import java.io.*;
 import java.net.*;
 
+/**
+ * 
+ * <p>This class represent an UDP Client</p>
+ * <p> His activities are :</p>
+ * <ul>
+ * <li>Create a socket</li>
+ * <li>Send a packet</li>
+ * <li>Receive a packet</li>
+ * </ul>
+ * @version 1.1
+ */
 public class UDPClient {
   public static void main(String[] args) throws IOException {
     if (args.length != 2) {
@@ -13,6 +24,12 @@ public class UDPClient {
     UDPClient client = new UDPClient(args[0], args[1]);
   }
 
+  /**
+   * This is the constructor of UDPClient
+   * 
+   * @param arg0 The server IP address or name
+   * @param arg1 The port where the communication will work
+   */
   public UDPClient(String arg0, String arg1) {
     try {
       // Create a datagram socket
