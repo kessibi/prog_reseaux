@@ -158,7 +158,6 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
     if (o == deconnexion) {
       System.out.println("Deconnexion IHM");
       try {
-        socOut.println("quit");
         socOut.close();
         socIn.close();
         echoSocket.close();
