@@ -11,6 +11,7 @@ import java.io.*;
 import java.net.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class EchoServerMultiThreaded {
@@ -71,13 +72,37 @@ public class EchoServerMultiThreaded {
     clientsOn.forEach((uuid, client) -> client.sendToClient(message));
   }
 
+  public void sendPrivateMsg(String from, String to, String line) {
+    boolean isOn = false;
+    String message = "<" + whatTimeItIs() + "> " + line;
+
+    for (Map.Entry<UUID, ClientThread> entry : clientsOn.entrySet()) {
+      ClientThread client = entry.getValue();
+
+      if (to.equals(client.getUserName())) {
+        isOn = true;
+      }
+    }
+
+    // if the recipient is not online
+    if (!isOn) {
+      return;
+    }
+
+    clientsOn.forEach((uuid, client) -> {
+      if (from.equals(client.getUserName()) || to.equals(client.getUserName())) {
+        client.sendToClient(message);
+      }
+    });
+  }
+
   public void sendToAllExcept(String line, UUID id) {
     String message = "<" + whatTimeItIs() + "> " + line;
     history.addMessage(message);
 
     clientsOn.forEach((uuid, client) -> {
       if (uuid != id) {
-        client.sendToClient(line);
+        client.sendToClient(message);
       }
     });
   }

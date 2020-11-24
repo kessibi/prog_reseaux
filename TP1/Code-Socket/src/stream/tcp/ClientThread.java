@@ -48,15 +48,25 @@ public class ClientThread extends Thread {
       sendToClient(history.toString());
 
       while ((message = socIn.readLine()) != null) {
-        switch (message) {
-          case "":
-            // ignoring blank messages for now
-            break;
-          case "quit":
-            server.closeThread(this);
-            break;
-          default:
-            server.sendToAll(this.name + ": " + message);
+        if (message.startsWith("!msg")) {
+          String[] words = message.split(" ");
+          String user = words[1];
+          String msg = message.substring(6 + user.length(), message.length());
+
+          String privateMsg = this.name + " -> " + user + ": " + msg;
+          server.sendPrivateMsg(this.name, user, privateMsg);
+
+        } else {
+          switch (message) {
+            case "":
+              // ignoring blank messages for now
+              break;
+            case "!quit":
+              server.closeThread(this);
+              break;
+            default:
+              server.sendToAll(this.name + ": " + message);
+          }
         }
       }
 
