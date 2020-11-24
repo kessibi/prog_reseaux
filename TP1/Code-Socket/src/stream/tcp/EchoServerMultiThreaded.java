@@ -24,11 +24,6 @@ public class EchoServerMultiThreaded {
   ServerSocket listenSocket;
   private History history;
 
-  /**
-   * The main method initiates the server.
-   * @param port The port.
-   *
-   **/
   public static void main(String args[]) {
     if (args.length != 1) {
       System.err.println("usage: java EchoServerMultiThreaded <port>");
@@ -42,7 +37,7 @@ public class EchoServerMultiThreaded {
   /**
    * The constructor takes care of several tasks: The server listens on a socket if a new client wants to start a connection.
    * All connected clients are saved in a <code>HashMap</code>. For every client a new thread is started.
-   * @param port 
+   * @param port the port to listen to
    */
   public EchoServerMultiThreaded(int port) {
     String filename = "/tmp/chat_" + String.valueOf(port) + ".txt";
@@ -82,7 +77,7 @@ public class EchoServerMultiThreaded {
   /**
    * The method takes a message (or information in general) passed as a <code>String</code>, 
    * saves it the chat history and sends it to all connected clients.
-   * @param String A message or information.
+   * @param line A message or information.
    */
   public void sendToAll(String line) {
     String message = "<" + whatTimeItIs() + "> " + line;

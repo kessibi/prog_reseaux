@@ -54,7 +54,6 @@ public class ClientThread extends Thread {
 
   /**
    * Receives a request from client then sends an echo to the client.
-   * @param clientSocket The client socket.
    **/
   public void run() {
     try {

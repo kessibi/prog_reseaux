@@ -32,7 +32,7 @@ public class EchoServer {
 
   /**
    * main method
-   * @param port
+   * @param args will get the port and attach the socket to it, to read from it 
    *
    **/
   public static void main(String args[]) {

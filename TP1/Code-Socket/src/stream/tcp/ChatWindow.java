@@ -220,7 +220,7 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
   public void keyReleased(KeyEvent e) {}
 
   /**
-   * This method shows a text information about connection -> connection connected 
+   * This method shows a text information about connection 
    */
   public void estConnecte() {
     etat_connexion.setText("Connection status: connected");
@@ -228,7 +228,7 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
   }
   
   /**
-   * This method shows a text information about connection -> connection disconnected 
+   * This method shows a text information about connection
    */
   public void estDeconnecte() {
     etat_connexion.setText("Connection status: disconnected");
@@ -236,7 +236,7 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
   }
 
   /**
-   * This method shows a text information about connection -> connection error 
+   * This method shows a text information about connection
    */
   public void estErreur() {
     etat_connexion.setText("Connection status: error");
