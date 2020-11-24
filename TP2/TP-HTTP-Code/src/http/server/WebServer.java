@@ -30,6 +30,7 @@ public class WebServer {
    *
    * @param port The port the server will be listening from and accepting
    * requests
+   * @param rootDir the directory to get files from
    */
   public WebServer(int port, String rootDir) {
     this.port = port;
