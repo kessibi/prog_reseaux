@@ -91,13 +91,17 @@ public class History {
 
   @Override
   public String toString() {
-    String output = "History:";
+    String output = "======= History =======";
     if (messages.size() < 1) {
       output += " No messages so far. Start chatting!";
     }
     for (String message : messages) {
       output = output + "\n" + message;
     }
+    output += "\n=== End of the history ===\n\n";
+    output += "Don't hesitate to use:\n";
+    output += "!list\n";
+    output += "!msg <user> your msg\n";
     return output;
   }
 }

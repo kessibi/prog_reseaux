@@ -59,10 +59,12 @@ public class ClientThread extends Thread {
         } else {
           switch (message) {
             case "":
+            case " ":
+            case "\n":
               // ignoring blank messages for now
               break;
-            case "!quit":
-              server.closeThread(this);
+            case "!list":
+              server.sendList(this.uuid);
               break;
             default:
               server.sendToAll(this.name + ": " + message);

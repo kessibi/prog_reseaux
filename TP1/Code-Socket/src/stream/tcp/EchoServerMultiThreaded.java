@@ -96,6 +96,19 @@ public class EchoServerMultiThreaded {
     });
   }
 
+  public void sendList(UUID to) {
+    String connectedUsers = "Connected users: ";
+
+    for (Map.Entry<UUID, ClientThread> entry : clientsOn.entrySet()) {
+      ClientThread client = entry.getValue();
+      connectedUsers += client.getUserName() + "; ";
+    }
+    String message = "<" + whatTimeItIs() + "> " + connectedUsers;
+
+    ClientThread client = clientsOn.get(to);
+    client.sendToClient(message);
+  }
+
   public void sendToAllExcept(String line, UUID id) {
     String message = "<" + whatTimeItIs() + "> " + line;
     history.addMessage(message);
