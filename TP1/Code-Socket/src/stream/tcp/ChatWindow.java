@@ -131,7 +131,6 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
   public void actionPerformed(ActionEvent evt) {
     Object o = evt.getSource();
     if (o == connexion) {
-      this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
       System.out.println("Connexion IHM");
       String ip_nom = ip.getText();
       String port_nom = port.getText();
@@ -144,6 +143,7 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
         deconnexion.setEnabled(true);
         connexion.setEnabled(false);
         estConnecte();
+        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
       } catch (UnknownHostException e) {
         System.err.println("Don't know about host:" + ip_nom);
         estErreur();
