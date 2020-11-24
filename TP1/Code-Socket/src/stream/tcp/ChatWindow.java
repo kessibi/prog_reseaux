@@ -143,7 +143,6 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
         deconnexion.setEnabled(true);
         connexion.setEnabled(false);
         estConnecte();
-        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
       } catch (UnknownHostException e) {
         System.err.println("Don't know about host:" + ip_nom);
         estErreur();
@@ -158,7 +157,6 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
     if (o == deconnexion) {
       System.out.println("Deconnexion IHM");
       try {
-        socOut.println("quit");
         socOut.close();
         socIn.close();
         echoSocket.close();
