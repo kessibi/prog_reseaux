@@ -20,6 +20,12 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
+/**
+ * 
+ * This class represent a ChatWindow which use TCP socket to communicate with other ChatWindows
+ *
+ */
+
 public class ChatWindow extends JFrame implements KeyListener, ActionListener {
   int WIDTH = 700;
   int HEIGHT = 900;
@@ -42,6 +48,9 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
     ChatWindow fenetre = new ChatWindow();
   }
 
+  /**
+   * This constructor create a chat window using swing and AWT imports
+   */
   public ChatWindow() {
     this.setTitle("Chat");
     this.setSize(WIDTH, HEIGHT);
@@ -128,6 +137,11 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
     scrollPane.updateUI();
   }
 
+  /**
+   * This method intercept an event with buttons in the UI
+   * 
+   * @param evt An event automatically generate by JAVA AWT 
+   */
   public void actionPerformed(ActionEvent evt) {
     Object o = evt.getSource();
     if (o == connexion) {
@@ -171,34 +185,59 @@ public class ChatWindow extends JFrame implements KeyListener, ActionListener {
     	envoyerMessage();
     }
   };
-  
+  /**
+   * This method take the text in the response text field and send it
+   */
   public void envoyerMessage () {
 	  System.out.println("Envoyer IHM");
       String text_to_send = response.getText();
       socOut.println(text_to_send);
       response.setText("");
   }
-
+  /**
+   * This method intercept an event with keys
+   * 
+   * @param e An event automatically generate by JAVA AWT 
+   */
   public void keyTyped(KeyEvent e) {
     if (e.getKeyChar() == '\n') {
     	envoyerMessage();
     }
   }
-
+  
+  /**
+   * This method intercept an event with keys (not used)
+   * 
+   * @param e An event automatically generate by JAVA AWT 
+   */
   public void keyPressed(KeyEvent e) {}
-
+  
+  /**
+   * This method intercept an event with keys (not used)
+   * 
+   * @param e An event automatically generate by JAVA AWT 
+   */
   public void keyReleased(KeyEvent e) {}
 
+  /**
+   * This method shows a text information about connection 
+   */
   public void estConnecte() {
     etat_connexion.setText("Connection status: connected");
     etat_connexion.setForeground(new Color(201, 240, 211));
   }
-
+  
+  /**
+   * This method shows a text information about connection
+   */
   public void estDeconnecte() {
     etat_connexion.setText("Connection status: disconnected");
     etat_connexion.setForeground(new Color(176, 0, 53));
   }
 
+  /**
+   * This method shows a text information about connection
+   */
   public void estErreur() {
     etat_connexion.setText("Connection status: error");
     etat_connexion.setForeground(Color.red);

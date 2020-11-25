@@ -16,6 +16,15 @@ public class UDPMulticast {
     UDPMulticast client = new UDPMulticast(args[0], Integer.valueOf(args[1]).intValue());
   }
 
+  /**
+   * The one and only method of the class, will take care of connecting to a
+   * multicast IP address and send out/receive messages. Each client is
+   * identified by a generated UUID, contained in each datagram along with
+   * his name and message.
+   *
+   * @param addr The IP address to connect to
+   * @param groupPort the port to connect to
+   */
   public UDPMulticast(String addr, int groupPort) {
     try {
       // Create a multicast socket
