@@ -61,3 +61,31 @@ graphique. Respectivement: `java stream.tcp.EchoClient localhost 3001` ou
 Lors de sa connexion, le client inscrit son nom et le serveur lui retourne
 ensuite la liste complète de l'historique.
 
+## Serveur HTTP
+
+Le serveur HTTP développé est visible via https://java.kessibi.fr.
+C'est un serveur utilisant une pool de 20 threads, a chaque requete, un thread
+renvoie le fichier demandé puis retourne dans le pool de threads disponibles.
+
+Le serveur peut être compilé avec `make jar` puis `java -jar WebServer.jar
+<port> <rootDir>` avec rootDir étant le dossier source de lecture des fichiers.
+Par exemple, utilisez: `java -jar WebServer.jar 3000 www`.
+
+Lors d'une connexion, le header de la requête est parsé, construit puis la
+réponse est construite (et le fichier lu) dans `Response.java`
+
+L'ensemble des élements HTTP supportés par le serveur est décrit dans l'index
+disponible au choix à https://java.kessibi.fr ou http://localhost:3000. Il
+comprend plusieurs codes de réponses (200, 500, 400, 451, ...), le `GET`, le
+`POST`, les fichiers audio/vidéo, les fichiers dynamiques, ...
+
+
+## Sur les TPs en général
+
+Comme demandé, les documentations sont disponibles, dans `TP1/Code-Socket/doc`
+et `TP2/TP-HTTP-Code/doc`.
+
+Les deux TPS (serveur HTTP et chat TCP) sont dockerisés donc peuvent être
+déployés de manière rapide et isolée. C'est notamment de cette manière que
+le serveur HTTP est disponible sur https://java.kessibi.fr et qu'une instance
+du chat est disponible sur kessibi.fr au port 3001.
